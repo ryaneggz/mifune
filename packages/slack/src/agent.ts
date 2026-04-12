@@ -26,7 +26,7 @@ import { createMomTools, setUploadFunction } from "./tools/index.js";
 // Configurable model via env vars (fixes issue #63)
 const momProvider = process.env.MOM_PROVIDER || "openai-codex";
 const momModelId = process.env.MOM_MODEL || "gpt-5.4";
-const model = getModel(momProvider, momModelId);
+const model = getModel(momProvider as any, momModelId as any);
 if (!model) {
 	console.error(`Unknown model: ${momProvider}/${momModelId}. Check MOM_PROVIDER and MOM_MODEL env vars.`);
 	process.exit(1);

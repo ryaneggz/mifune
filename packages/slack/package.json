@@ -14,8 +14,7 @@
 	],
 	"scripts": {
 		"clean": "shx rm -rf dist",
-		"build": "command -v tsgo >/dev/null 2>&1 && tsgo -p tsconfig.build.json && shx chmod +x dist/main.js || echo 'SKIP: tsgo not found'",
-		"build:tsc": "tsc -p tsconfig.build.json && chmod +x dist/main.js",
+		"build": "(command -v tsgo >/dev/null 2>&1 && tsgo -p tsconfig.build.json || tsc -p tsconfig.build.json) && chmod +x dist/main.js",
 		"dev": "tsgo -p tsconfig.build.json --watch --preserveWatchOutput",
 		"test": "vitest run",
 		"prepublishOnly": "npm run clean && npm run build"
