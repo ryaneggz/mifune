@@ -54,8 +54,8 @@ if (!agentDefaults.provider || !agentDefaults.model) {
 	console.error("No default model configured. Run 'openharness' then '/model' to set provider and model.");
 	if (process.env.NODE_ENV !== "test") process.exit(1);
 }
-const slackProvider = agentDefaults.provider;
-const slackModelId = agentDefaults.model;
+const slackProvider: string = agentDefaults.provider ?? "";
+const slackModelId: string = agentDefaults.model ?? "";
 const model = getModel(slackProvider as any, slackModelId as any);
 if (!model) {
 	console.error(`Unknown model: ${slackProvider}/${slackModelId}. Update default in 'openharness' with '/model'.`);
