@@ -1,0 +1,18 @@
+{
+  "name": "mifune",
+  "version": "2026.5.2",
+  "description": "Pi+Mom harness for openharness",
+  "openharness": ">=2026.5.2",
+  "agents": ["pi"],
+  "compose_overlays": [
+    "overlays/docker-compose.pi-host.yml",
+    "overlays/docker-compose.slack.yml"
+  ],
+  "onboard_steps": [
+    { "id": "slack", "after": "github", "file": "onboard-steps/slack.js" }
+  ],
+  "install_hook": "install-hook.sh",
+  "entrypoint_hook": "entrypoint-hook.sh",
+  "workspace_seed": "workspace-seed/",
+  "prebuilt_image": "ghcr.io/ryaneggz/mifune:latest"
+}

@@ -1,0 +1,68 @@
+{
+  "name": "@ryaneggz/mifune",
+  "version": "2026.5.2",
+  "description": "Pi+Mom harness for openharness — install with: oh harness add @ryaneggz/mifune",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": "github:ryaneggz/mifune",
+  "homepage": "https://mifune.sh",
+  "bin": {
+    "mom": "./dist/main.js"
+  },
+  "files": [
+    "dist/",
+    "harness.json",
+    "overlays/",
+    "onboard-steps/",
+    "workspace-seed/",
+    "extensions/",
+    "install-hook.sh",
+    "entrypoint-hook.sh",
+    "README.md",
+    "UPSTREAM.md"
+  ],
+  "harness": {
+    "name": "mifune",
+    "version": "2026.5.2",
+    "description": "Pi+Mom harness for openharness",
+    "openharness": ">=2026.5.2",
+    "agents": ["pi"],
+    "compose_overlays": [
+      "overlays/docker-compose.pi-host.yml",
+      "overlays/docker-compose.slack.yml"
+    ],
+    "onboard_steps": [
+      { "id": "slack", "after": "github", "file": "onboard-steps/slack.js" }
+    ],
+    "install_hook": "install-hook.sh",
+    "entrypoint_hook": "entrypoint-hook.sh",
+    "workspace_seed": "workspace-seed/",
+    "prebuilt_image": "ghcr.io/ryaneggz/mifune:latest"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/main.js",
+    "test": "vitest run",
+    "lint": "eslint src/ extensions/ onboard-steps/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sandbox-runtime": "^0.0.16",
+    "@mariozechner/pi-agent-core": "0.70.0",
+    "@mariozechner/pi-ai": "0.70.0",
+    "@mariozechner/pi-coding-agent": "0.70.0",
+    "@openharness/sandbox": "^0.1.0",
+    "@slack/socket-mode": "^2.0.0",
+    "@slack/web-api": "^7.0.0",
+    "chalk": "^5.6.2",
+    "croner": "^9.1.0",
+    "diff": "^8.0.2",
+    "typebox": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^3.0.0",
+    "eslint": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
