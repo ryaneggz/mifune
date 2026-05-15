@@ -1,12 +1,21 @@
+# Pi runtime state
+sessions/
+git/
+npm/
+
+# Node/test artifacts
 node_modules/
+coverage/
 dist/
-data/
+*.tsbuildinfo
 *.log
-.DS_Store
+
+# Local secrets/config
 .env
 .env.*
 !.env.example
+
+# OS/editor noise
+.DS_Store
 .vscode/
 .idea/
-coverage/
-*.tsbuildinfo
