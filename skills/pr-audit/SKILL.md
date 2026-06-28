@@ -169,7 +169,7 @@ the same green PR; flags annotate whatever state the PR is in.
 | ⚠ **Conflicting / behind** | `mergeable=="CONFLICTING"` \|\| `mergeStateStatus ∈ {DIRTY, BEHIND}` |
 | 🔴 **Changes requested** | `reviewDecision=="CHANGES_REQUESTED"` |
 | 👀 **Needs review** | `reviewDecision=="REVIEW_REQUIRED"` (review is *required* but not yet given) |
-| ✅ **Ready to merge** | `mergeable=="MERGEABLE"` && `mergeStateStatus=="CLEAN"` && `ci=="PASS"` && `reviewDecision ∈ {APPROVED, "", null}` — the same selector `crons/heartbeat.md` uses to nudge merges |
+| ✅ **Ready to merge** | `mergeable=="MERGEABLE"` && `mergeStateStatus=="CLEAN"` && `ci=="PASS"` && `reviewDecision ∈ {APPROVED, "", null}` — the same selector `.oh/crons/heartbeat.md` uses to nudge merges |
 | ⏳ **Pending / other** | none of the above (e.g. `ci=="PEND"`, or `mergeable=="UNKNOWN"` — re-check shortly) |
 
 Because Draft wins first, the actionable states below it (CI-failing … pending)
@@ -382,7 +382,7 @@ Then run the qualify/improve pass per `.mifune/skills/retro/references/memory-pr
 | Resource | Path |
 |----------|------|
 | Repo-resolution / `REPO_OVERRIDE` pattern | `.claude/skills/ci-status/SKILL.md` |
-| Ready-PR selector | `crons/heartbeat.md` (autopilot ready-PR nudge) |
+| Ready-PR selector | `.oh/crons/heartbeat.md` (autopilot ready-PR nudge) |
 | PR title / base / size conventions | `.claude/skills/git/SKILL.md` |
 | Autopilot caps (10 total / 6 daily) | `.claude/skills/autopilot/SKILL.md` § Guardrails |
 | Parallel-agent briefing format | `.mifune/skills/advisor/SKILL.md` |

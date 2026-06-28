@@ -73,7 +73,7 @@ fi
 # Harness structure
 ls "$AUDIT_ROOT/.claude/skills/"
 ls "$AUDIT_ROOT/.claude/agents/" 2>/dev/null || echo "no agents dir"
-ls "$AUDIT_ROOT/crons/" 2>/dev/null || echo "no crons"
+ls "$AUDIT_ROOT/.oh/crons/" 2>/dev/null || echo "no crons"
 ls "$AUDIT_LOG_ROOT/memory/" 2>/dev/null | tail -10
 ls "$AUDIT_ROOT/.mifune/skills/wiki/corpus/" 2>/dev/null | head -20
 
@@ -204,7 +204,7 @@ Launch 4 Agent tool calls **in a single message**. Each receives the Context Sna
 >
 > 1. **Security posture** — Check: is the Docker socket mounted into containers (`/var/run/docker.sock`)? Are any containers running with `--privileged` or `user: root`? Are there default passwords or hardcoded secrets in compose files or entrypoints? Is sudo unrestricted inside the sandbox?
 >
-> 2. **Cron reliability** — Read all cron definitions in `crons/`. For each: is there a watchdog/restart mechanism? What happens if the cron runtime crashes — does it auto-recover? Is the cron/daemon config present and valid?
+> 2. **Cron reliability** — Read all cron definitions in `.oh/crons/`. For each: is there a watchdog/restart mechanism? What happens if the cron runtime crashes — does it auto-recover? Is the cron/daemon config present and valid?
 >
 > 3. **Worktree cleanup** — In the source checkout listed as `AUDIT_ROOT`, run `git worktree list`. Identify orphaned agent branches (`agent/*`) with no recent commits (check `git log --since="7 days ago"`). Is there any automated cleanup?
 >
@@ -232,7 +232,7 @@ Launch 4 Agent tool calls **in a single message**. Each receives the Context Sna
 >
 > 2. **Wiki utilization** — List all files under `.mifune/skills/wiki/corpus/`. For each, check if it has substantive content (>10 lines) or is a placeholder stub. What percentage is populated?
 >
-> 3. **Cron health** — For each cron definition in `crons/`, classify: ACTIVE (recently logged evidence), STALE (defined but no recent log evidence), MISCONFIGURED (broken frontmatter or missing schedule). Check memory logs for cron execution traces.
+> 3. **Cron health** — For each cron definition in `.oh/crons/`, classify: ACTIVE (recently logged evidence), STALE (defined but no recent log evidence), MISCONFIGURED (broken frontmatter or missing schedule). Check memory logs for cron execution traces.
 >
 > 4. **Agent worktree status** — In the source checkout listed as `AUDIT_ROOT`, run `git worktree list` and `git branch -a | grep agent/`. Classify each: ACTIVE (commits in last 7 days), IDLE (commits 7-30 days ago), ORPHANED (no commits in 30+ days or branch deleted).
 >
@@ -354,7 +354,7 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 |----------|------|
 | Orchestrator skills | `.claude/skills/` |
 | Workspace skills | `workspace/.claude/skills/` when created by a pack/runtime (not part of the minimal workspace template) |
-| Crons | `crons/` |
+| Crons | `.oh/crons/` |
 | Memory logs | `memory/YYYY-MM-DD/log.md` |
 | Long-term memory | `memory/MEMORY.md` |
 | Wiki | `.mifune/skills/wiki/corpus/` |

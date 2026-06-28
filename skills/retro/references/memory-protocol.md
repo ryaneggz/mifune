@@ -65,7 +65,7 @@ step.
 
 **Heartbeat cron:** The hourly heartbeat reads `memory/<today>/log.md` at the
 start of each pulse (creating the directory if it does not exist) and appends a
-result entry. See `crons/heartbeat.md` for the full heartbeat spec.
+result entry. See `.oh/crons/heartbeat.md` for the full heartbeat spec.
 
 ## Write — Memory Improvement Protocol
 
@@ -103,7 +103,7 @@ is an incomplete execution.
 ## Concurrency
 
 Memory files are plain markdown. Shared runtime logs — especially
-`memory/<today>/log.md` and `crons/.cron.log` written from cron, isolated
+`memory/<today>/log.md` and `.oh/crons/.cron.log` written from cron, isolated
 worktrees, or kept tmux sessions — should append through
 `scripts/locked-append.sh` (or an equivalent `flock`-guarded helper) so a whole
 multi-line record is serialized. Local scratch writes that only one process can
@@ -123,7 +123,7 @@ The convention that prevents corruption:
 - Cron/shared-root runtime append snippets use `scripts/locked-append.sh` when
   writing multi-line records or liveness lines consumed by watchdogs.
 - Heartbeat writes happen inside a single cron invocation — overlap is
-  disabled (`overlap: false` in `crons/heartbeat.md`).
+  disabled (`overlap: false` in `.oh/crons/heartbeat.md`).
 
 Appending a new `##` section to an existing `log.md` is safe when the writer uses
 the locked append convention for shared runtime paths. Editing an existing entry
@@ -164,6 +164,6 @@ goes in `IDENTITY.md`.
 | Resource | Path |
 |----------|------|
 | Directory README convention | `context/directory-readme.md` |
-| Heartbeat cron (daily log writer) | `crons/heartbeat.md` |
+| Heartbeat cron (daily log writer) | `.oh/crons/heartbeat.md` |
 | Long-term lessons (instance) | `memory/MEMORY.md` |
 | Identity / operating principles | `context/IDENTITY.md` |
