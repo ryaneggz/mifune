@@ -99,4 +99,4 @@ These hold across all three subcommands; the reference docs assume them.
 - `.mifune/skills/wiki/references/schema.md` — canonical schema and authoring rules
 - `.mifune/skills/wiki/references/ingest.md` · `query.md` · `lint.md` — full procedures
 - `.mifune/skills/retro/references/memory-protocol.md` — the Memory Improvement Protocol
-- `evals/probes/wiki-readme-index.sh` — drift guard for the tracked corpus index
+- `.oh/evals/probes/wiki-readme-index.sh` — drift guard for the tracked corpus index

@@ -128,10 +128,10 @@ log_liveness() { mkdir -p "$AUTOPILOT_LOG_ROOT/crons"; printf '[%s] autopilot: %
 # SH_WORD_SPLIT by default) — either way the clean check matches nothing and is
 # vacuously satisfied. The array form "${OWNED_PATHS[@]}" expands correctly in both.
 # Write-surface cross-check (known-complete): every tracked path autopilot writes in
-# §2–§7 is within OWNED_PATHS — tasks/, evals/, memory/, CHANGELOG.md, and .claude/ are
+# §2–§7 is within OWNED_PATHS — tasks/, .oh/evals/, memory/, CHANGELOG.md, and .claude/ are
 # the autopilot-written tracked dirs, all in the set — else it is committed by the
 # selected executor on the feature branch or lives under /tmp. No autopilot write lands outside this surface.
-OWNED_PATHS=(.claude/ context/ docs/ scripts/ crons/ .mifune/skills/wiki/ evals/ memory/ tasks/ CHANGELOG.md)
+OWNED_PATHS=(.claude/ context/ docs/ scripts/ crons/ .mifune/skills/wiki/ .oh/evals/ memory/ tasks/ CHANGELOG.md)
 
 # Isolated worktree mode (worktree:true cron — the DEFAULT for autopilot): the cron
 # runtime fired this run inside a fresh detached worktree ($CRON_WORKTREE) cut from the
@@ -459,12 +459,12 @@ gh pr comment "$PR_NUM" --repo "$AUTOPILOT_REPO" --body "autopilot: Ralph loop d
 /eval
 ```
 
-- If `/eval` updates `evals/RESULTS.md`, commit it on the branch:
+- If `/eval` updates `.oh/evals/RESULTS.md`, commit it on the branch:
   ```bash
-  git add evals/RESULTS.md && git commit -m "$(printf 'task: refresh evals benchmark\n\nSubmitted-by: %s\n' "${RALPH_HARNESS:-Claude}")" || true
+  git add .oh/evals/RESULTS.md && git commit -m "$(printf 'task: refresh evals benchmark\n\nSubmitted-by: %s\n' "${RALPH_HARNESS:-Claude}")" || true
   ```
 
-**Decision rule** (ralph fallback) — key on the runner's exit code and the green→red **delta**, NOT on the bare presence of a `REGRESSION` row in `evals/RESULTS.md`. A probe that was already red on the base (`$AUTOPILOT_REMOTE/$AUTOPILOT_BASE`) is **pre-existing** — this PR did not cause it, so it must not block. **PROCEED** to §7 when BOTH of these hold:
+**Decision rule** (ralph fallback) — key on the runner's exit code and the green→red **delta**, NOT on the bare presence of a `REGRESSION` row in `.oh/evals/RESULTS.md`. A probe that was already red on the base (`$AUTOPILOT_REMOTE/$AUTOPILOT_BASE`) is **pre-existing** — this PR did not cause it, so it must not block. **PROCEED** to §7 when BOTH of these hold:
 
 1. the `/eval` runner exited `0`, AND
 2. every regressed probe's delta is `unchanged` vs the base (already-red — NOT a NEW green→red transition).
