@@ -136,7 +136,7 @@ append_runtime_log() {
 log_skip() {
   local status="$1" action="$2" observation="$3" root day time
   root=$(resolve_autopilot_log_root)
-  mkdir -p "$root/crons"
+  mkdir -p "$root/.oh/crons"
   printf '[%s] autopilot: %s\n' "$(date -Iseconds)" "$status" | append_runtime_log "$root/.oh/crons/.cron.log"
   day=$(date -u +%Y-%m-%d); time=$(date -u +%H:%M)
   mkdir -p "$root/memory/$day"
