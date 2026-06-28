@@ -33,7 +33,7 @@ Common targets in this harness:
 ## When NOT to use
 
 Skip when the artifact is **source or pipeline input** — Markdown stays the substrate of the harness:
-- PRDs (`tasks/*/prd.md`), briefings, commit messages, PR bodies, `CHANGELOG.md`
+- PRDs (`.oh/tasks/*/prd.md`), briefings, commit messages, PR bodies, `CHANGELOG.md`
 - Memory log entries themselves (`memory/<date>/log.md`)
 - Skill/identity sources (`CLAUDE.md`, `context/`, `.claude/skills/`)
 - Agent-to-agent handoffs (advisor → executor briefings)

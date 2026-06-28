@@ -14,7 +14,7 @@ Create detailed Product Requirements Documents that are clear, actionable, and s
 1. Receive a feature description from the user
 2. Ask 3-5 essential clarifying questions (with lettered options)
 3. Generate a structured PRD based on answers
-4. Save to `tasks/<feature-name>/prd.md`
+4. Save to `.oh/tasks/<feature-name>/prd.md`
 
 **Important:** Do NOT start implementing. Just create the PRD.
 
@@ -150,7 +150,7 @@ The PRD reader may be a junior developer or AI agent. Therefore:
 ## Output
 
 - **Format:** Markdown (`.md`)
-- **Location:** `tasks/<feature-name>/`
+- **Location:** `.oh/tasks/<feature-name>/`
 - **Filename:** `prd.md`
 - **Feature name (`<short-desc>`):** lowercase kebab-case, `[a-z0-9-]+`, **≤5 words** (per `.claude/skills/git/SKILL.md` — this slug becomes the `<short-desc>` segment in any branch the task produces). Slugify the user-supplied name:
   - Lowercase everything
@@ -165,7 +165,7 @@ The PRD reader may be a junior developer or AI agent. Therefore:
   | `Slack thread replies` | `slack-thread-replies` |
   | `Add a long six word feature` | rejected — exceeds 5 words |
   | `archive` | rejected — `archive` is reserved |
-- **Rerun:** if `tasks/<feature-name>/prd.md` already exists, overwrite in place. The PRD is a living spec; git history is the recovery path.
+- **Rerun:** if `.oh/tasks/<feature-name>/prd.md` already exists, overwrite in place. The PRD is a living spec; git history is the recovery path.
 
 ---
 
@@ -276,4 +276,4 @@ Before saving the PRD:
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
 - [ ] Feature name is lowercase kebab-case (`[a-z0-9-]+`, not `archive`)
-- [ ] Saved to `tasks/<feature-name>/prd.md`
+- [ ] Saved to `.oh/tasks/<feature-name>/prd.md`

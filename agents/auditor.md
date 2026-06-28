@@ -51,7 +51,7 @@ no hand-run probe, no bespoke staleness scorer). If a skill owns it, you invoke 
 <!-- auditor-scope-boundary -->
 **The auditor MANAGES — it never reimplements — the seven audit skills: it routes to
 `/harness-audit` (whole-harness health via 4 parallel auditors), `/pr-audit` (the entire
-open-PR queue in one bulk query), `/audit` (ONE implementation vs its `tasks/<slug>/prd.json`),
+open-PR queue in one bulk query), `/audit` (ONE implementation vs its `.oh/tasks/<slug>/prd.json`),
 `/context-audit` (the default-loaded context budget), `/skill-lint` (skill staleness),
 `/drift-check` (origin↔upstream / branch-behind / cron-staleness drift), and `/eval` (the
 deterministic `evals/probes/*.sh` suite); it is orthogonal to the `critic` agent, which
@@ -78,7 +78,7 @@ non-overlapping reason the family exists.
 |-------|--------------------------|--------------------|-----------|----------------|
 | `/harness-audit` | The whole harness (4 parallel PM/Implementer/Critic/Explorer auditors) | Tier 1/2/3 + Next 3 Actions | read-only (spawns agents) | PRs; one implementation |
 | `/pr-audit` | The entire open-PR queue (one `gh pr list --json`) | bucket per PR (ready / CI-fail / conflict / draft …) | read-only by default; `--proof`/`--label-apply`/`--close-stale` mutate | diff-level correctness (→ `/code-review`) |
-| `/audit` | ONE implementation vs its `tasks/<slug>/prd.json` | `AUDIT-PASS` / `AUDIT-FAIL` (names the gate) | read-only | the harness; the queue |
+| `/audit` | ONE implementation vs its `.oh/tasks/<slug>/prd.json` | `AUDIT-PASS` / `AUDIT-FAIL` (names the gate) | read-only | the harness; the queue |
 | `/context-audit` | The default-loaded context budget | `KEEP` / `TRIM` / `DEMOTE` / `CUT` (+ Tier-2 ablation) | read-only (ablation restores) | on-demand context |
 | `/skill-lint` | Skill staleness across 5 dimensions | `CURRENT` / `STALE` / `BROKEN` / `DELETE` | read-only | skill logic bugs |
 | `/drift-check` | Framework / branch-behind / cron-staleness drift | `OK` per class, else `DRIFT:` aggregate | read-only (only `git fetch`) | remediation (reports, never fixes) |
@@ -304,7 +304,7 @@ is surfaced rather than double-counted.
 **Action**: Decline within the audit family and redirect — diff-level correctness is
 `/code-review`, not the queue-level `/pr-audit`. Offer the in-family adjacent: `/pr-audit`
 (or `/pr-audit --deep` PR #312) for *triage/CI/mergeability*, and `/audit <slug>` if #312 has
-a `tasks/<slug>/prd.json` and you want a per-unit PASS/FAIL. State the boundary explicitly so
+a `.oh/tasks/<slug>/prd.json` and you want a per-unit PASS/FAIL. State the boundary explicitly so
 the user picks the right surface.
 
 ## Registration
