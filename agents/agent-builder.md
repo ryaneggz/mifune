@@ -246,8 +246,8 @@ initialPrompt: "..."         # Optional: auto-submitted first user turn when run
    - Hard cap on agentic turns before the subagent is forcibly stopped — useful for bounded-cost research/cleanup tasks
 
 10. **memory** (persistent agent memory):
-    - `user` → `~/.claude/agent-memory/<agent-name>/` (cross-project)
-    - `project` → `.claude/agent-memory/<agent-name>/` (project-shared, version-controlled)
+    - `user` → `~/.claude/agent-.oh/memory/<agent-name>/` (cross-project)
+    - `project` → `.claude/agent-.oh/memory/<agent-name>/` (project-shared, version-controlled)
     - `local` → `.claude/agent-memory-local/<agent-name>/` (project-private, gitignore)
     - When set, Read/Write/Edit are auto-enabled and the first 200 lines / 25 KB of `MEMORY.md` are injected. Tell the agent in its prompt to consult and update memory.
 

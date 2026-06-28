@@ -523,7 +523,7 @@ const USAGE = `usage: mine-traces.mjs [options]
   --include-prompt-text     emit redacted prompt text (default off)
   --no-git                  stub the ground-truth bonus to 0
   --weights <json>          override friction weights (all keys required)
-  --out <dir>               output dir (default memory/<UTC-date>/)
+  --out <dir>               output dir (default .oh/memory/<UTC-date>/)
   --report-only             write the report only (no MEMORY/IDENTITY mutation)
   --dry-run                 print to stdout; write nothing
   --max-file-mb N          (default 50) skip files larger than this

@@ -12,7 +12,7 @@ lessons.
 
 **Core principle: compose `/retro`, scoped to this task.** `/retro` already implements the
 scientific session-closing pass — falsifiable hypotheses, evidence for *and* against, a
-verdict + confidence, and a propose-then-confirm promotion into `memory/MEMORY.md` /
+verdict + confidence, and a propose-then-confirm promotion into `.oh/memory/MEMORY.md` /
 `context/IDENTITY.md`. `retro` is the execution-side application of it: point `/retro`
 at the just-built `tasks/<slug>/` run so the reflection is anchored to that unit's
 artifacts (`prd.md`, `progress.txt`, `prd.json`, `critique.md`, the `/audit` evidence)
@@ -66,7 +66,7 @@ still require explicit approval (or are skipped under `--dry-run`).
 ## Memory Protocol
 
 `/retro` writes its own log entry. `retro` ensures it is tagged to the unit; if `/retro`
-did not, add one line to `memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+did not, add one line to `.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## spec-retro -- HH:MM UTC

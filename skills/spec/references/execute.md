@@ -91,7 +91,7 @@ propose-then-confirm gate. Always logs.
 The self-improvement tail (`AGENTS.md § The Workflow`):
 
 - **compound** — promote durable knowledge so it is reused, not re-derived (`/wiki ingest`,
-  `memory/MEMORY.md`, mint a probe from any guardrail lesson).
+  `.oh/memory/MEMORY.md`, mint a probe from any guardrail lesson).
 - **compress** — keep the always-loaded context lean and clear (`/context-audit`).
 - **benchmark** — confirm the change earned its complexity (`/benchmark`): the `/eval`
   regression floor stays green AND the capability-benchmark ceiling held or moved.
@@ -125,7 +125,7 @@ Workflow`: *human merge — final gate, no auto-merge*). Never `gh pr merge`.
 ## Memory Protocol
 
 The composed skills each log their own entries. `execute` adds one roll-up to
-`memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+`.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## spec-execute -- HH:MM UTC

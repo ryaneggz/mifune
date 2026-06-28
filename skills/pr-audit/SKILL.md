@@ -327,7 +327,7 @@ Default does nothing here. Each requires an explicit flag and a confirmation.
 
 ### 8. Memory Protocol
 
-Append to `memory/$(date -u +%Y-%m-%d)/log.md` (create the dir first):
+Append to `.oh/memory/$(date -u +%Y-%m-%d)/log.md` (create the dir first):
 
 ```markdown
 ## PR Audit -- HH:MM UTC

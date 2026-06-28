@@ -66,7 +66,7 @@ AGE_DAYS=$(( (NOW - MTIME) / 86400 ))
 ```bash
 # Count daily memory logs that mention this skill name (case-insensitive)
 SKILL_NAME="<skill-name>"
-MENTION_COUNT=$(grep -rli "$SKILL_NAME" /home/sandbox/harness/memory/ 2>/dev/null | wc -l)
+MENTION_COUNT=$(grep -rli "$SKILL_NAME" /home/sandbox/harness/.oh/memory/ 2>/dev/null | wc -l)
 ```
 
 | Mentions | Score |
@@ -194,7 +194,7 @@ Sort the Scores table by Total ascending (worst first). Omit CURRENT skills from
 
 ### 7. Memory Protocol
 
-Append to `memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
+Append to `.oh/memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
 
 ```markdown
 ## [Skill Lint] — HH:MM UTC
