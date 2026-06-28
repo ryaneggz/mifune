@@ -1,63 +1,46 @@
 # Mifune
 
-Portable Pi agent pack extracted from Open Harness `.pi/`.
+Mifune is the portable primitive pack consumed by Open Harness. Open Harness
+mounts this repository at the repo-relative path `.mifune/` as a pinned Git
+submodule; provider-specific surfaces are symlinks into that mount, not copies.
 
-The repo is intended to be installed as the `.pi/` directory inside a Pi agent
-workspace. It carries the current Mifune extensions, prompts, settings, Slack
-manifest, and upstream notes without wiring Open Harness to this repo as a
-submodule yet.
+## How Open Harness consumes this repo
 
-## Install
-
-### Git clone
-
-From the root of a Pi workspace:
+Open Harness pins this repository at `.mifune/`:
 
 ```bash
-git clone https://github.com/ryaneggz/mifune.git .pi
-pi --settings .pi/settings.json
+git clone --recurse-submodules https://github.com/mifunedev/openharness.git
+# or, after a plain clone:
+bash .oh/scripts/ensure-mifune.sh --init
+bash .oh/scripts/ensure-mifune.sh --check
 ```
 
-### Curl installer
+After initialization, these Open Harness paths resolve into this repo:
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/ryaneggz/mifune/development/install.sh | bash
-pi --settings .pi/settings.json
-```
+- `.pi/skills -> ../.mifune/skills`
+- `.claude/skills -> ../.mifune/skills`
+- `.codex/skills -> ../.mifune/skills`
+- `.claude/agents -> ../.mifune/agents`
+- `.claude/hooks -> ../.mifune/hooks`
+- `.codex/agents -> ../.claude/agents`
+- `.hermes/skills/openharness -> ../../.mifune/skills` when Hermes is enabled
 
-Installer options:
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `MIFUNE_DEST` | `.pi` | Destination directory |
-| `MIFUNE_REF` | `development` | Branch/ref to install |
-| `MIFUNE_REPO` | `https://github.com/ryaneggz/mifune` | Source repo |
-| `MIFUNE_FORCE` | `0` | When `1`, move an existing non-empty destination aside before install |
-
-## Contents
+## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `settings.json` | Pi settings for the pack |
-| `APPEND_SYSTEM.md` | Extra system context appended by Pi |
-| `extensions/` | Pi extensions: Slack bridge, plan mode, path guard, banner, footer |
-| `prompts/` | Prompt templates |
-| `install/slack-manifest.json` | Slack app manifest for the bridge |
-| `skills/` | Empty portable skills directory; project-specific skills can be added here |
-| `themes/` | Optional local themes directory |
+| `skills/` | Shared skill source of truth for Claude, Codex, Pi, Hermes, and other providers. |
+| `agents/` | Shared sub-agent definitions. |
+| `hooks/` | Shared enforcement hooks used through provider symlinks. |
+| `skills.lock` | Registry-managed skill pins and checksums. |
 
-## Slack bridge
+## Update workflow
 
-See `extensions/slack/README.md` for token setup, allowlist behavior, and run
-instructions.
+1. Change Mifune in this repository first.
+2. Merge the Mifune PR and record the resulting commit SHA.
+3. Open an Open Harness PR that bumps the `.mifune` submodule pin to that SHA.
+4. Run `bash .oh/scripts/ensure-mifune.sh --check`, the root Mifune checkout
+   probe, and the provider/eval checks from Open Harness.
 
-## Development
-
-```bash
-npm install
-npm test
-```
-
-The extraction intentionally copies only tracked Open Harness `.pi/` files. It
-does not include runtime directories such as `sessions/`, `git/`, `npm/`, or
-`node_modules/`.
+Do not vendor these files directly into Open Harness; Open Harness should carry
+only the pinned `.mifune` submodule plus provider symlinks/configuration.
