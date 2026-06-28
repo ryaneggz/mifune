@@ -62,7 +62,7 @@ code by design — this is not a bug.
 target rule/memory file loaded (reusing `scripts/ablate.sh`'s swap/restore/trap
 mechanics — NOT the `claude -p` oracle) and reports `LOAD-BEARING` (regression on
 removal) or `PRUNABLE`. This is the prune-half of the fitness function. See
-US-006 in `tasks/context-fitness-.oh/evals/prd.md`.
+US-006 in `tasks/context-fitness-evals/prd.md`.
 
 ## When NOT to use
 
