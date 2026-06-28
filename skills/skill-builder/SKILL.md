@@ -28,7 +28,7 @@ exists to enforce: concise SKILL.md, detail in `references/`.)
 - **Command** — single `.claude/commands/<name>.md`. Merged into skills, same
   frontmatter; pick a skill unless you truly want one bare file.
 - **Agent** — `.claude/agents/<name>.md`: a *forked sub-agent* with its own tool
-  list and isolated context. Use only when you need an isolated context/persona,
+  list and isolated context. Use only when you need an isolated .oh/context/persona,
   not just a playbook. (Skill *authoring* itself moved from an agent to this skill.)
 
 ## Protocol

@@ -13,7 +13,7 @@ The sharp test: *Is this a fact or synthesis about a topic, intended to be read 
 | Surface | Holds | Written by | When wiki wins instead |
 | --- | --- | --- | --- |
 | `.mifune/skills/*/SKILL.md` | Behavioral norms (prescriptive) | Deliberate orchestrator revision | Wiki holds **facts**, skills hold **how to behave** |
-| `context/IDENTITY.md` | Cross-session operating principles | Orchestrator, deliberate | Wiki is codebase/domain knowledge; IDENTITY is "always do X" |
+| `.oh/context/IDENTITY.md` | Cross-session operating principles | Orchestrator, deliberate | Wiki is codebase/domain knowledge; IDENTITY is "always do X" |
 | `memory/MEMORY.md` | Distilled experiential lessons ("run on date X showed Y") | Orchestrator via `/retro` | Wiki entries are **reference**; memory is **journal** |
 | `memory/<topic>.md` | Ad-hoc reference notes, no schema, no retrieval | Any session | Wiki wins after a note is re-derived twice and earns a schema |
 | `docs/` | Human-facing prose | Orchestrator / contributors | Wiki is LLM-readable; docs are human-readable |

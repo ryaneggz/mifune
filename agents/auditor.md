@@ -93,7 +93,7 @@ Match the request's signal to its target class, route to the skill(s), in the st
 | "is the harness healthy", "find improvements", "what should we fix", "system review" | whole harness | `/harness-audit` `[--focus <area>]` | expensive (spawns 4 agents) — run **last** in a campaign |
 | "check/triage the open PRs", "what's stuck", "PR backlog", "before a merge sweep" | open-PR queue | `/pr-audit` | read-only default; add `--deep`/`--proof`/`--label-apply`/`--close-stale` only on explicit ask |
 | "is `<slug>` done/promotable", "verify impl vs prd.json", "go/no-go on this build" | one implementation | `/audit <slug> [--pr N \| --branch b]` | single PASS/FAIL; it internally composes eval + pr-audit(one PR) + browser — do not pre-run those yourself |
-| "what's in my context", "context budget", "signal vs noise in rules", "before/after editing context/ or CLAUDE.md" | default-loaded context | `/context-audit` `[--ablate <file>]` | `--ablate` for a provable cut |
+| "what's in my context", "context budget", "signal vs noise in rules", "before/after editing .oh/context/ or CLAUDE.md" | default-loaded context | `/context-audit` `[--ablate <file>]` | `--ablate` for a provable cut |
 | "are my skills stale", "skill health", "skill lint" | skills | `/skill-lint [all\|root\|workspace\|<name>]` | deterministic, cheap |
 | "check for drift", "behind upstream", "is a merged cron running", "long session gap" | drift classes | `/drift-check` | read-only, **cheapest — run first** |
 | "run evals", "probe suite", "is lesson X green", "benchmark the harness" | probe suite / state | `/eval [--probe id \| --tier A]` | deterministic, cheap; for a filtered run prefer the Bash path `bash .claude/skills/eval/run.sh --probe <id>` (the SKILL.md does not bind `$ARGUMENTS`) |
