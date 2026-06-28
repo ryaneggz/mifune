@@ -5,13 +5,17 @@ description: |
   Verifies agent-browser is installed and Chromium launches before navigating.
   Errors out with a diagnostic trace if anything fails.
   TRIGGER when: asked to open a page, browse a URL, take a screenshot,
-  or test a site with agent-browser.
+  test a site with agent-browser, or prepare a browser login session.
 argument-hint: "<url> [--viewport desktop|mobile] [--session <name>]"
 ---
 
 # Agent Browser
 
 Open a URL in the headless browser. Runs a health check first — if the browser is broken, errors out with a full diagnostic trace so the user can fix it.
+
+## Reference snippets
+
+- X.com authenticated sessions: read `references/x-login.md` for the dashboard + persistent profile + human 2FA pattern, security caveats, and verify/reuse commands.
 
 ## Instructions
 
