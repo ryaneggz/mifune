@@ -26,4 +26,4 @@ Keep the entry under the normal 600-word cap. Put long OCR lists, checksums, and
 
 ## README regeneration pitfall
 
-When regenerating `.mifune/skills/wiki/corpus/README.md` without `/wiki lint`, match `evals/probes/wiki-readme-index.sh` exactly: it extracts only literal single-line `tags:` values from frontmatter. Do not normalize multi-line YAML lists into bracket syntax during ad-hoc regeneration, or the probe will fail on existing entries that use block-style tags.
+When regenerating `.mifune/skills/wiki/corpus/README.md` without `/wiki lint`, match `.oh/evals/probes/wiki-readme-index.sh` exactly: it extracts only literal single-line `tags:` values from frontmatter. Do not normalize multi-line YAML lists into bracket syntax during ad-hoc regeneration, or the probe will fail on existing entries that use block-style tags.

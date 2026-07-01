@@ -6,7 +6,7 @@ description: >-
   ceiling without breaking the regression floor, and is worth its complexity),
   then emit a single BENEFICIAL/NOT-BENEFICIAL verdict. Composes (never forks)
   the existing instruments: /eval (the regression floor — probes stay green) +
-  the capability-benchmark ceiling delta (evals/capability/RESULTS.md vs. the
+  the capability-benchmark ceiling delta (.oh/evals/capability/RESULTS.md vs. the
   counterfactual). Machinery added with no benchmark movement is NOT-BENEFICIAL
   by definition. Distinct from /audit (per-unit promotability =
   floor) — this is the ceiling: did the harness get BETTER, not just not-broken.
@@ -26,7 +26,7 @@ it worth its complexity?* — and emits exactly one verdict.
 
 **Core principle: compose, don't re-derive — and judge OUTCOMES, not machinery.**
 This skill owns the *verdict*, not the instruments. The regression floor is
-`/eval`; the progress ceiling is the capability benchmark (`evals/capability/`).
+`/eval`; the progress ceiling is the capability benchmark (`.oh/evals/capability/`).
 `/benchmark` runs both and integrates them into a single `BENEFICIAL` /
 `NOT-BENEFICIAL`. *Adding machinery is not progress* — a change
 that grows the harness but does not move the capability benchmark is
@@ -35,7 +35,7 @@ that grows the harness but does not move the capability benchmark is
 > **Not `/audit`.** `/audit` is the per-unit *floor* gate (does this one impl
 > satisfy its task graph and is it promotable?). `/benchmark` is the *ceiling*
 > gate (did the harness get **better**?). Distinct instruments, distinct
-> question — see `evals/capability/README.md` § *Ceiling vs. floor*. `/benchmark`
+> question — see `.oh/evals/capability/README.md` § *Ceiling vs. floor*. `/benchmark`
 > *consults* `/eval`; it does not replace or fork it.
 
 ---
@@ -79,14 +79,14 @@ The change must move **or hold-with-justification** the capability-benchmark
 suite score versus the counterfactual (the `--base` state). Read the ceiling:
 
 ```bash
-# suite score lives in evals/capability/RESULTS.md (the scoreboard comment line)
-grep -oE 'suite score = [0-9.]+' evals/capability/RESULTS.md | head -1     # this change
-git show "${BASE:-development}":evals/capability/RESULTS.md \
+# suite score lives in .oh/evals/capability/RESULTS.md (the scoreboard comment line)
+grep -oE 'suite score = [0-9.]+' .oh/evals/capability/RESULTS.md | head -1     # this change
+git show "${BASE:-development}":.oh/evals/capability/RESULTS.md \
   | grep -oE 'suite score = [0-9.]+' | head -1                              # counterfactual
 ```
 
 Decide on the delta (v1 is rubric inspection — the instrument has no auto-runner
-yet, see `evals/capability/README.md` § *Non-scope*):
+yet, see `.oh/evals/capability/README.md` § *Non-scope*):
 
 | Ceiling delta vs. counterfactual | Verdict |
 |---|---|
@@ -150,7 +150,7 @@ REDIRECT-FLAG: capability suite score flat at <X.XX>/2.00 for <N> cycles while N
 - **Fork `/eval` or the instrument.** It composes both; it never reimplements the
   probe runner or re-authors the capability tasks.
 - **Tune the harness to the benchmark.** The task set is held-out
-  (`evals/capability/README.md` § *Held-out discipline*); special-casing to ace a
+  (`.oh/evals/capability/README.md` § *Held-out discipline*); special-casing to ace a
   task corrupts the instrument.
 
 ---

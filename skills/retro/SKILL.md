@@ -161,12 +161,12 @@ When in doubt between MEMORY.md and IDENTITY.md: if you would scope it to "this 
 
 ### 5a. Triage tag — route each promotable lesson to its correction surface
 
-For every lesson that survived to the promotion list (verdict `supported`, confidence `medium` or higher), assign exactly one triage tag before proposing it. Route to the **cheapest reliable surface** per `evals/README.md § Correction-surface triage`:
+For every lesson that survived to the promotion list (verdict `supported`, confidence `medium` or higher), assign exactly one triage tag before proposing it. Route to the **cheapest reliable surface** per `.oh/evals/README.md § Correction-surface triage`:
 
 | Tag | Use when | Proposed artifact |
 |-----|----------|-------------------|
-| `harden` | Lesson is a guardrail — something that must not happen | A hook + a unit-test probe (`evals/probes/<id>.sh`, tier A) |
-| `proceduralize` | Lesson is a technique — a step, pattern, or workflow improvement | A skill step addition + a doc-lint probe (`evals/probes/<id>.sh`, tier A) |
+| `harden` | Lesson is a guardrail — something that must not happen | A hook + a unit-test probe (`.oh/evals/probes/<id>.sh`, tier A) |
+| `proceduralize` | Lesson is a technique — a step, pattern, or workflow improvement | A skill step addition + a doc-lint probe (`.oh/evals/probes/<id>.sh`, tier A) |
 | `eval` | Genuine judgment residue only — cannot be mechanically checked | Tier-B deferred; never a hard gate in v1 |
 
 **Default away from `eval`.** Proposing the `eval` tag requires an explicit justification note: state why neither `harden` nor `proceduralize` can close the lesson. If no justification is given, demote to `proceduralize` (or `harden` if the lesson is a guardrail).
@@ -177,7 +177,7 @@ Each proposed MEMORY.md line must carry its triage tag and a proposed probe id:
 - YYYY-MM-DD: <lesson> [<subsystem> · <confidence> · harden|proceduralize|eval] — probe: <id> | basis: <one clause>
 ```
 
-The probe id follows the pattern `<subsystem-slug>-<YYYYMMDD>` (e.g., `memory-scaffolding-20260610`). For `eval`-tagged lessons, use `probe: deferred-tier-b` and append the justification note. The probe id is a forward reference — the actual `evals/probes/<id>.sh` file is created separately and is out of scope for `/retro` itself.
+The probe id follows the pattern `<subsystem-slug>-<YYYYMMDD>` (e.g., `memory-scaffolding-20260610`). For `eval`-tagged lessons, use `probe: deferred-tier-b` and append the justification note. The probe id is a forward reference — the actual `.oh/evals/probes/<id>.sh` file is created separately and is out of scope for `/retro` itself.
 
 ### 6. Propose-then-confirm gate
 

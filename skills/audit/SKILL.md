@@ -84,7 +84,7 @@ bash .claude/skills/eval/run.sh ; rc=$?
 
 Block only on a **new** `green→red` regression or a non-zero runner exit. A
 pre-existing red with an unchanged delta is non-gating but MUST be disclosed in
-the verdict. (Mirrors `/ship-spec` Stage 11 and `evals/probes/eval-gate.sh`.)
+the verdict. (Mirrors `/ship-spec` Stage 11 and `.oh/evals/probes/eval-gate.sh`.)
 
 ### Gate 3 — Promotable / CI state
 
@@ -135,7 +135,7 @@ red from gate 2.
 - **Fix anything.** Remediation is the `implement` node's job on `AUDIT-FAIL`.
 - **Fork `/pr-audit`.** It consults the existing fleet-triage tool for one PR; it
   never reimplements the bulk query (which is probe-pinned by
-  `evals/probes/autopilot-executor-toggle.sh`).
+  `.oh/evals/probes/autopilot-executor-toggle.sh`).
 - **Re-run a passing gate.** Fail-fast: stop at the first failing gate.
 
 ---

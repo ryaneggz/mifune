@@ -50,7 +50,7 @@ Read the task artifacts first:
 2. `.oh/tasks/<slug>/progress.txt` — implementation chronology, files changed, commits, and Codebase Patterns.
 3. `.oh/tasks/<slug>/prd.json` — story pass state and branch name when present.
 4. `.oh/tasks/<slug>/critique.md` — critic findings and mitigations when present.
-5. Eval/audit/verification evidence when present: `evals/RESULTS.md`, targeted probe output in `progress.txt`, `/audit` or `/pr-audit` notes, CI status, and commit/PR evidence.
+5. Eval/audit/verification evidence when present: `.oh/evals/RESULTS.md`, targeted probe output in `progress.txt`, `/audit` or `/pr-audit` notes, CI status, and commit/PR evidence.
 6. The relevant wiki entry (`.mifune/skills/wiki/corpus/<wiki-slug>.md`) before drafting the teaching response.
 
 If any required task artifact is missing, proceed only with a caveat naming the missing file. Do not invent verification evidence.

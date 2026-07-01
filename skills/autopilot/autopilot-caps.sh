@@ -81,7 +81,7 @@ resolve_cap() {
   printf '%s\n' "$fallback"
 }
 
-# Keep the config keys explicit here because evals/probes/autopilot-preflight-gate.sh
+# Keep the config keys explicit here because .oh/evals/probes/autopilot-preflight-gate.sh
 # verifies the gate defaults remain wired to harness_cfg autopilot.total_cap and
 # harness_cfg autopilot.daily_cap.
 TOTAL_CAP="$(resolve_cap AUTOPILOT_TOTAL_CAP autopilot.total_cap "$DEFAULT_TOTAL_CAP")"

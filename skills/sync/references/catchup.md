@@ -102,13 +102,13 @@ git checkout --ours .mifune/skills/wiki/corpus/README.md 2>/dev/null || \
   git checkout --ours wiki/README.md 2>/dev/null || true
 ```
 Regenerate from frontmatter using the exact logic in
-`evals/probes/wiki-readme-index.sh` (awk frontmatter extraction, `sort -r`
+`.oh/evals/probes/wiki-readme-index.sh` (awk frontmatter extraction, `sort -r`
 by `updated:` date, then slug). The probe will verify correctness.
 
-**evals/RESULTS.md** (expected conflict):
+**.oh/evals/RESULTS.md** (expected conflict):
 - If the squash adds a NEW probe → hand-insert only the new row; `git checkout
-  --ours evals/RESULTS.md` then add the row per `evals/README.md` format.
-- If the squash adds NO new probe → `git checkout --theirs evals/RESULTS.md`
+  --ours .oh/evals/RESULTS.md` then add the row per `.oh/evals/README.md` format.
+- If the squash adds NO new probe → `git checkout --theirs .oh/evals/RESULTS.md`
   (upstream's scoreboard, zero timestamp churn).
 
 ### Conflict recovery — `cherry-pick -n` trap
