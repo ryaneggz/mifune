@@ -49,14 +49,14 @@ mkdir -p ".oh/memory/$TODAY"
 # then append to .oh/memory/$TODAY/log.md
 ```
 
-For directory anchor and gitignore conventions see `context/directory-readme.md`.
+For directory anchor and gitignore conventions see `.oh/context/directory-readme.md`.
 
 ## Read
 
 **Orchestrator (full session):** `.oh/memory/MEMORY.md` is listed in `CLAUDE.md`
 under "Session start" and is auto-loaded at the top of every session alongside
-`context/SOUL.md`, `context/IDENTITY.md`, `context/TOOLS.md`, and
-`context/USER.md`. No explicit read step needed.
+`.oh/context/SOUL.md`, `.oh/context/IDENTITY.md`, `.oh/context/TOOLS.md`, and
+`.oh/context/USER.md`. No explicit read step needed.
 
 **Sub-agents (on demand):** Sub-agents do not auto-load memory. When a briefing
 is relevant, the advisor should include the pertinent excerpt or instruct the
@@ -94,7 +94,7 @@ produced the entry.
 
 **c) Improve** — if actionable, append to `.oh/memory/MEMORY.md` under
 `## Lessons Learned`. Keep each lesson to one bullet. Lessons that already
-appear in `context/IDENTITY.md` or an existing rule must not be duplicated —
+appear in `.oh/context/IDENTITY.md` or an existing rule must not be duplicated —
 link or skip.
 
 The qualify/improve loop is not optional. A log entry without a qualify pass
@@ -139,18 +139,18 @@ is not: treat existing entries as immutable once written.
 | Step-by-step task plans | Plans belong in `.oh/tasks/<name>/prd.json` or the PRD; memory holds outcomes, not intentions |
 | Anything re-derivable in under a minute | If reading one file answers the question, don't memorize the answer |
 
-## Boundary with `context/IDENTITY.md`
+## Boundary with `.oh/context/IDENTITY.md`
 
-`context/IDENTITY.md` and `.oh/memory/MEMORY.md` are related but distinct:
+`.oh/context/IDENTITY.md` and `.oh/memory/MEMORY.md` are related but distinct:
 
-| | `context/IDENTITY.md` | `.oh/memory/MEMORY.md` |
+| | `.oh/context/IDENTITY.md` | `.oh/memory/MEMORY.md` |
 |-|-----------------------|--------------------|
 | **Holds** | Operating principles — how the orchestrator behaves; distilled rules-of-thumb | Experiential observations — what specific runs revealed |
 | **Tone** | Prescriptive ("always do X", "never do Y") | Descriptive ("run on YYYY-MM-DD showed that…") |
 | **Written by** | Orchestrator sessions, after deliberate review | Any session or skill, immediately after a run |
 | **Changed how** | Deliberate revision when evidence overturns a principle | Append-only; entries are never edited after writing |
 
-A lesson graduates from `.oh/memory/MEMORY.md` to `context/IDENTITY.md` only when
+A lesson graduates from `.oh/memory/MEMORY.md` to `.oh/context/IDENTITY.md` only when
 it has generalized into a principle — that is, it applies across contexts, not
 just the run that produced it. Do not double-write: once a lesson is in
 `IDENTITY.md`, remove or link it from `MEMORY.md`.
@@ -163,7 +163,7 @@ goes in `IDENTITY.md`.
 
 | Resource | Path |
 |----------|------|
-| Directory README convention | `context/directory-readme.md` |
+| Directory README convention | `.oh/context/directory-readme.md` |
 | Heartbeat cron (daily log writer) | `.oh/crons/heartbeat.md` |
 | Long-term lessons (instance) | `.oh/memory/MEMORY.md` |
-| Identity / operating principles | `context/IDENTITY.md` |
+| Identity / operating principles | `.oh/context/IDENTITY.md` |

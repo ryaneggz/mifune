@@ -7,7 +7,7 @@ description: |
   degradation — the only provably safe gate for cutting load-bearing content.
   TRIGGER when: asked to audit context window, check default context load,
   "what's in my context", evaluate rules for signal vs noise, or before/after
-  any change to context/ or CLAUDE.md.
+  any change to .oh/context/ or CLAUDE.md.
 ---
 
 # Context Audit
@@ -19,7 +19,7 @@ Score every file in the default-loaded context set on 4 deterministic dimensions
 | Layer | Files | Loaded how |
 |-------|-------|-----------|
 | Bootloader | `CLAUDE.md` | always |
-| Context | `context/SOUL.md`, `context/IDENTITY.md`, `context/TOOLS.md`, `context/USER.md` | session start |
+| Context | `.oh/context/SOUL.md`, `.oh/context/IDENTITY.md`, `.oh/context/TOOLS.md`, `.oh/context/USER.md` | session start |
 | Memory | `.oh/memory/MEMORY.md` (+ today's log) | session start |
 | Skill metadata | frontmatter of all `**/SKILL.md` | always injected |
 
@@ -44,10 +44,10 @@ TODAY=$(date -u +%Y-%m-%d)
 # Enumerate all files and their footprint
 for f in \
   "$HARNESS/CLAUDE.md" \
-  "$HARNESS/context/SOUL.md" \
-  "$HARNESS/context/IDENTITY.md" \
-  "$HARNESS/context/TOOLS.md" \
-  "$HARNESS/context/USER.md" \
+  "$HARNESS/.oh/context/SOUL.md" \
+  "$HARNESS/.oh/context/IDENTITY.md" \
+  "$HARNESS/.oh/context/TOOLS.md" \
+  "$HARNESS/.oh/context/USER.md" \
   "$HARNESS/.oh/memory/MEMORY.md"; do
   [ -f "$f" ] || continue
   chars=$(wc -c < "$f")
@@ -374,7 +374,7 @@ markers:
 For running ablation outside a Claude session:
 
 ```bash
-.claude/skills/context-audit/runner.sh --ablate context/<file>.md
+.claude/skills/context-audit/runner.sh --ablate .oh/context/<file>.md
 ```
 
 See `runner.sh` in this skill directory.

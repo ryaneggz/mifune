@@ -9,7 +9,7 @@
 contains **feature vectors + metadata only — never raw prompt text**;
 `--include-prompt-text` adds a redacted `promptText` field per session and prints
 a `WARNING` banner to stderr. `--report-only` writes the report only and never
-mutates `.oh/memory/MEMORY.md` / `context/IDENTITY.md` — the engine never edits those
+mutates `.oh/memory/MEMORY.md` / `.oh/context/IDENTITY.md` — the engine never edits those
 regardless; the flag documents that contract for the SKILL layer.
 
 ## Top-level dataset

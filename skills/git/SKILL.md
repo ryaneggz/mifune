@@ -241,7 +241,7 @@ If `.claude/skills/ci-status/` exists, invoke `/ci-status` after every `git push
 
 ## Provider Portability
 
-Because not every provider loads `context/rules/*`, put active instructions in
+Because not every provider loads `.oh/context/rules/*`, put active instructions in
 skills and use rules files only as compatibility pointers. If you discover a
 provider-specific workflow dependency hiding in a rules file, promote it to a
 skill and leave a short rule file that points to the skill.

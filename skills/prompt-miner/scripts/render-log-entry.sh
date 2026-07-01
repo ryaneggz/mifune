@@ -5,7 +5,7 @@
 # (git rev-parse --show-toplevel) and appends a single Memory-Improvement-Protocol
 # record to .oh/memory/<UTC-date>/log.md through the repo-root .oh/scripts/locked-append.sh
 # helper so the whole multi-line record is serialized under flock. Diagnostics go
-# to stderr; the helper never edits .oh/memory/MEMORY.md or context/IDENTITY.md.
+# to stderr; the helper never edits .oh/memory/MEMORY.md or .oh/context/IDENTITY.md.
 #
 # Flags (all optional except --result):
 #   --result <MINING-COMPLETE|DRY-RUN|NO-SESSIONS|NO-CORPUS>  the run's RESULT tag

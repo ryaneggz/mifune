@@ -131,7 +131,7 @@ log_liveness() { mkdir -p "$AUTOPILOT_LOG_ROOT/.oh/crons"; printf '[%s] autopilo
 # §2–§7 is within OWNED_PATHS — .oh/tasks/, .oh/evals/, .oh/memory/, CHANGELOG.md, and .claude/ are
 # the autopilot-written tracked dirs, all in the set — else it is committed by the
 # selected executor on the feature branch or lives under /tmp. No autopilot write lands outside this surface.
-OWNED_PATHS=(.claude/ context/ docs/ scripts/ .oh/crons/ .mifune/skills/wiki/ .oh/evals/ .oh/memory/ .oh/tasks/ CHANGELOG.md)
+OWNED_PATHS=(.claude/ .oh/context/ docs/ scripts/ .oh/crons/ .mifune/skills/wiki/ .oh/evals/ .oh/memory/ .oh/tasks/ CHANGELOG.md)
 
 # Isolated worktree mode (worktree:true cron — the DEFAULT for autopilot): the cron
 # runtime fired this run inside a fresh detached worktree ($CRON_WORKTREE) cut from the
