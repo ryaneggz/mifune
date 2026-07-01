@@ -22,12 +22,12 @@ Compose the existing primitives (`/prd`, wiki synthesis per `.mifune/skills/wiki
 
 ```mermaid
 flowchart TD
-    A["1. Parse args + derive slug"] --> B["2. /prd → tasks/<slug>/prd.md"]
+    A["1. Parse args + derive slug"] --> B["2. /prd → .oh/tasks/<slug>/prd.md"]
     B --> W["2.5 Wiki alignment<br/>compare local spec/wiki against DeepWiki"]
     W --> D["3. Spawn 2 critics in parallel<br/>(implementer + user lens)<br/>cross-check wiki alignment + protected paths"]
     D --> E["4. Resolve critique<br/>HALT if high-severity"]
     E --> C["5. Open GH issue → #N<br/>(only after PROCEED)"]
-    C --> F["6. /ralph → tasks/<slug>/prd.json"]
+    C --> F["6. /ralph → .oh/tasks/<slug>/prd.json"]
     F --> G["7. Scaffold prompt.md + progress.txt"]
     G --> G2["7.5 /compact (before implement)<br/>after PRD artifacts"]
     G2 --> H["8. Branch + commit + push"]
@@ -56,7 +56,7 @@ Extract:
 - **`--repo <owner/name>`** (optional, default `mifunedev/openharness`) — GitHub repository for issue/PR operations.
 - **`--remote <name>`** (optional, default resolved from `--repo`) — git remote to fetch/push work branches.
 - **`--base <branch>`** (optional, default `development`) — PR base and branch start point.
-- **`--executor=ralph|delegate-advisor`** (optional, default `ralph`) — Stage 10 build executor. `ralph` (default): the Advisor monitors `scripts/ralph.sh` directly (the Monitored async loop; `/delegate` is an optional within-iteration fan-out tool, never a replacement for the loop). `delegate-advisor`: the legacy `/delegate --plan tasks/<slug>/prd.json` worker fan-out.
+- **`--executor=ralph|delegate-advisor`** (optional, default `ralph`) — Stage 10 build executor. `ralph` (default): the Advisor monitors `scripts/ralph.sh` directly (the Monitored async loop; `/delegate` is an optional within-iteration fan-out tool, never a replacement for the loop). `delegate-advisor`: the legacy `/delegate --plan .oh/tasks/<slug>/prd.json` worker fan-out.
 
 ```bash
 SHIP_SPEC_REPO="${SHIP_SPEC_REPO:-mifunedev/openharness}"
@@ -86,7 +86,7 @@ Derive `<slug>` per `/prd` rules: lowercase, kebab-case, `[a-z0-9-]+`, **≤5 wo
 
 The slug is the universal key — it's the task directory, tmux session name, second segment of the branch, and embedded in the PR title. Choose once; never re-derive.
 
-### Stage 2 — `/prd` → `tasks/<slug>/prd.md`
+### Stage 2 — `/prd` → `.oh/tasks/<slug>/prd.md`
 
 Invoke the `prd` skill via the Skill tool:
 
@@ -97,11 +97,11 @@ args: <feature-description> + optional plan-file content
 
 If `--plan <path>` was provided, pass the plan content with explicit instruction to skip clarifying questions (the plan answers them). Otherwise allow the skill to ask its standard 3-5 clarifying questions before generating.
 
-Verify output exists at `tasks/<slug>/prd.md` before proceeding.
+Verify output exists at `.oh/tasks/<slug>/prd.md` before proceeding.
 
 ### Stage 2.5 — Wiki alignment + DeepWiki comparison
 
-Before critics run, make the PRD explicit about wiki impact. Read `.mifune/skills/wiki/references/schema.md` and compare the spec's topic against the public DeepWiki for this repository (`https://deepwiki.com/mifunedev/openharness`), opening the most relevant DeepWiki page(s) when the topic maps to an existing subsystem. Record the result in `tasks/<slug>/prd.md` as a `## Wiki Alignment` section:
+Before critics run, make the PRD explicit about wiki impact. Read `.mifune/skills/wiki/references/schema.md` and compare the spec's topic against the public DeepWiki for this repository (`https://deepwiki.com/mifunedev/openharness`), opening the most relevant DeepWiki page(s) when the topic maps to an existing subsystem. Record the result in `.oh/tasks/<slug>/prd.md` as a `## Wiki Alignment` section:
 
 ```markdown
 ## Wiki Alignment
@@ -129,12 +129,12 @@ Both critics receive an additional cross-check instruction: read `.claude/protec
 
 #### Critic A — Implementer's lens
 
-> You are an adversarial implementer reviewing a PRD before any code is written. Read `tasks/<slug>/prd.md`. Read `.claude/protected-paths.txt` and treat its entries as MUST-NOT-DELETE without an override note. Your job: surface technical risks BEFORE implementation begins.
+> You are an adversarial implementer reviewing a PRD before any code is written. Read `.oh/tasks/<slug>/prd.md`. Read `.claude/protected-paths.txt` and treat its entries as MUST-NOT-DELETE without an override note. Your job: surface technical risks BEFORE implementation begins.
 >
 > Focus on:
 > 1. **Vague acceptance criteria** — flag any AC that isn't directly verifiable
 > 2. **Missing dependencies** — what does each story silently assume exists?
-> 3. **Pattern conflicts** — does any story break an existing convention in this repo? Read `AGENTS.md` + the relevant `.mifune/skills/*/SKILL.md` (and any sibling `tasks/*/prd.json`, if present) for established patterns.
+> 3. **Pattern conflicts** — does any story break an existing convention in this repo? Read `AGENTS.md` + the relevant `.mifune/skills/*/SKILL.md` (and any sibling `.oh/tasks/*/prd.json`, if present) for established patterns.
 > 4. **Scope creep within stories** — are any "single iteration" stories actually 2+ stories?
 > 5. **Hidden destructive operations** — does any story imply file deletion / branch deletion / PR closure that isn't explicitly gated?
 > 6. **Wiki alignment** — if the task changes architecture, skill behavior, runtime flow, agent roles, or reusable vocabulary, does `## Wiki Alignment` exist, require the right local wiki updates, and compare against the relevant DeepWiki page(s)? Missing or shallow wiki alignment is SEVERITY: M; mark SEVERITY: H if the PRD would publish contradictory wiki guidance.
@@ -149,7 +149,7 @@ Both critics receive an additional cross-check instruction: read `.claude/protec
 
 #### Critic B — User's lens
 
-> You are an adversarial user reviewing a PRD before implementation. Read `tasks/<slug>/prd.md` and `context/USER.md` (the single-developer / single-project framing). Read `.claude/protected-paths.txt` and treat its entries as MUST-NOT-DELETE without an override note. Your job: surface scope and framing risks BEFORE the team commits.
+> You are an adversarial user reviewing a PRD before implementation. Read `.oh/tasks/<slug>/prd.md` and `context/USER.md` (the single-developer / single-project framing). Read `.claude/protected-paths.txt` and treat its entries as MUST-NOT-DELETE without an override note. Your job: surface scope and framing risks BEFORE the team commits.
 >
 > Focus on:
 > 1. **Scope ambiguity** — what's NOT in the Non-Goals section that should be?
@@ -167,7 +167,7 @@ Both critics receive an additional cross-check instruction: read `.claude/protec
 > ...
 > ```
 
-Write both critics' raw output to `tasks/<slug>/critique.md`:
+Write both critics' raw output to `.oh/tasks/<slug>/critique.md`:
 
 ```markdown
 # Critique — <slug>
@@ -188,7 +188,7 @@ Generated <date>; reviews `prd.md` post-/prd, pre-/ralph.
 
 ### Stage 4 — Resolve critique
 
-Read `tasks/<slug>/critique.md`. Apply the gate:
+Read `.oh/tasks/<slug>/critique.md`. Apply the gate:
 
 | Condition | Action |
 |---|---|
@@ -196,7 +196,7 @@ Read `tasks/<slug>/critique.md`. Apply the gate:
 | Only `SEVERITY: M` or `L` findings | **PROCEED.** Append synthesis paragraph to prd.md noting the medium/low risks were acknowledged; continue to stage 5 |
 | No findings | **PROCEED.** Append "Critics found no issues" line to prd.md; continue |
 
-The HALT path is the whole point. Critics are the short feedback loop; honoring their high-severity findings is what makes this safer than the v0.7 convergence pattern. Note: stages 1-4 produce ONLY local artifacts (prd.md, critique.md). No GitHub-side state exists until stage 5 — meaning a HALT is fully reversible with `rm -rf tasks/<slug>/`.
+The HALT path is the whole point. Critics are the short feedback loop; honoring their high-severity findings is what makes this safer than the v0.7 convergence pattern. Note: stages 1-4 produce ONLY local artifacts (prd.md, critique.md). No GitHub-side state exists until stage 5 — meaning a HALT is fully reversible with `rm -rf .oh/tasks/<slug>/`.
 
 ### Stage 5 — Open GH issue → `#N`
 
@@ -219,7 +219,7 @@ gh issue create \
     "<from prd.md goals>" \
     "" \
     "## PRD" \
-    "- tasks/<slug>/prd.md (this branch)" \
+    "- .oh/tasks/<slug>/prd.md (this branch)" \
     "" \
     "## Wiki Alignment" \
     "- Impact: <REQUIRED | NOT-APPLICABLE from prd.md>" \
@@ -237,16 +237,16 @@ Capture the returned issue URL; extract `<N>` (issue number) for downstream use.
 
 If `gh label create <prefix> --repo "$SHIP_SPEC_REPO"` is needed (label doesn't exist), create it first with a sensible color. Heredoc bodies are safe — the `deny-env-dump.sh` hook strips heredoc bodies before pattern-scanning, so `--body "$(cat <<'EOF' ... EOF)"` is fine.
 
-### Stage 6 — `/ralph` → `tasks/<slug>/prd.json`
+### Stage 6 — `/ralph` → `.oh/tasks/<slug>/prd.json`
 
 Invoke the `ralph` skill:
 
 ```
 Skill: ralph
-args: tasks/<slug>/ --issue <N> --prefix <prefix>
+args: .oh/tasks/<slug>/ --issue <N> --prefix <prefix>
 ```
 
-The skill produces `tasks/<slug>/prd.json` with `branchName: <prefix>/<N>-<slug>`. Verify it exists and parses (use `node -e "require('./tasks/<slug>/prd.json')"`).
+The skill produces `.oh/tasks/<slug>/prd.json` with `branchName: <prefix>/<N>-<slug>`. Verify it exists and parses (use `node -e "require('./.oh/tasks/<slug>/prd.json')"`).
 
 ### Stage 7 — Scaffold `prompt.md` + `progress.txt`
 
@@ -256,7 +256,7 @@ Clone `.claude/skills/ship-spec/templates/prompt.md` as the template (it ships w
 - Replace `#<issue>` with the tracking issue number
 - Confirm the read-context list (step 1) points at this task's prd.md, prd.json, critique.md, progress.txt (the template already references `.mifune/skills/advisor/SKILL.md` for critic-gated stories)
 
-Write `tasks/<slug>/progress.txt` with header only:
+Write `.oh/tasks/<slug>/progress.txt` with header only:
 
 ```
 # progress
@@ -267,7 +267,7 @@ Verify the four-file contract exists:
 
 ```bash
 for f in prd.md prd.json prompt.md progress.txt; do
-  [ -f "tasks/<slug>/$f" ] || { echo "MISSING: $f"; exit 1; }
+  [ -f ".oh/tasks/<slug>/$f" ] || { echo "MISSING: $f"; exit 1; }
 done
 ```
 
@@ -278,7 +278,7 @@ done
 This is the first of two compacts that bracket the implement phase. The PRD artifacts now exist on disk and the heaviest planning context — `/prd` plus the two critics — is already spent. Run `/compact` to reclaim that context before the commit/PR and the implementation handoff. Preserve only the handoff keys:
 
 ```text
-Preserve /ship-spec handoff context: slug <slug>, prefix <prefix>, issue #<N>, branch <prefix>/<N>-<slug>, critique H/M/L counts, four-file contract path tasks/<slug>/. Stages 8–9 re-read prd.md/prd.json/critique.md from disk.
+Preserve /ship-spec handoff context: slug <slug>, prefix <prefix>, issue #<N>, branch <prefix>/<N>-<slug>, critique H/M/L counts, four-file contract path .oh/tasks/<slug>/. Stages 8–9 re-read prd.md/prd.json/critique.md from disk.
 ```
 
 Stages 8–9 re-read the files from disk, so a post-compact context is sufficient. `/compact` is an optimization, not a gate — if it is unavailable or errors, log a warning and continue.
@@ -291,7 +291,7 @@ git fetch "$SHIP_SPEC_REMOTE" "$SHIP_SPEC_BASE"
 git checkout -b "<prefix>/<N>-<slug>" "$SHIP_SPEC_REMOTE/$SHIP_SPEC_BASE" 2>/dev/null \
   || git checkout "<prefix>/<N>-<slug>"
 
-git add "tasks/<slug>/"
+git add ".oh/tasks/<slug>/"
 git commit -m "$(cat <<'EOF'
 <prefix>: scaffold <slug> task
 
@@ -372,7 +372,7 @@ tmux new-session -d -s "$SESSION" -c "${WT:-$PWD}" \
 
 **Advisor `/goal` prompt** (one line; fill the placeholders — when `$CRON_WORKTREE` is set, substitute its actual path for `<worktree>` and use the "reuse" branch of step 1):
 
-> `/goal` As an **expert Advisor on `/worktrees`**, implement `tasks/<slug>/prd.json` for PR `#<PR>` on branch `<prefix>/<N>-<slug>`. (1) **If `<worktree>` is already provided** (autopilot's `$CRON_WORKTREE`, already on branch `<prefix>/<N>-<slug>`): `cd <worktree>` and do NOT create another worktree. **Otherwise** create an isolated worktree at `.worktrees/<prefix>/<N>-<slug>` via `/worktrees` and `cd` into it. (2) **Drive the build per `$SHIP_SPEC_EXECUTOR` (default `ralph`).** *Default (`ralph`)* — the Monitored async loop: launch `scripts/ralph.sh <slug>` in a named tmux session and **own the `STATUS: COMPLETE` watch yourself** (poll `tasks/<slug>/progress.txt` + the loop's tmux liveness; never delegate the watch to a sub-agent that returns early). A ralph iteration **may** call `/delegate` to fan out one story's disjoint files, but `/delegate` does **not** replace the loop. Given multiple **independent** tasks, run one `scripts/ralph.sh` per task in parallel (each its own slug + tmux session) and monitor each to its own `STATUS: COMPLETE`. *Opt-in (`--executor=delegate-advisor`)* — instead orchestrate with `/delegate --plan tasks/<slug>/prd.json`: spawn `general-purpose` worker(s) that each `cd` into that worktree and run `scripts/ralph.sh <slug>`, monitoring `tasks/<slug>/progress.txt` for `STATUS: COMPLETE` and the workers' tmux liveness. (3) Run the `/eval` gate (Stage 11). (4) If `tasks/<slug>/prd.md` has `## Wiki Alignment` with `Impact: REQUIRED`, revise the named `.mifune/skills/wiki/corpus/*.md` entries after implementation so they match the spec's final behavior and acceptance criteria, include DeepWiki-style relevant source files/line citations/system relationships, preserve the recorded DeepWiki comparison, and refresh `.mifune/skills/wiki/corpus/README.md`; verify with `bash evals/probes/wiki-readme-index.sh`. (5) Run `/compact` (Stage 11.5) to clear the implementation context before the audit. (6) In a **separate executor**, run `/pr-audit` for PR `#<PR>` and run `gh pr ready <PR> --repo "$SHIP_SPEC_REPO"` **only if it is classified promotable** (CI green + mergeable + clean); otherwise `gh pr comment` the blocking gate and leave it draft. Never `gh pr merge`. Leave this tmux session alive for attach.
+> `/goal` As an **expert Advisor on `/worktrees`**, implement `.oh/tasks/<slug>/prd.json` for PR `#<PR>` on branch `<prefix>/<N>-<slug>`. (1) **If `<worktree>` is already provided** (autopilot's `$CRON_WORKTREE`, already on branch `<prefix>/<N>-<slug>`): `cd <worktree>` and do NOT create another worktree. **Otherwise** create an isolated worktree at `.worktrees/<prefix>/<N>-<slug>` via `/worktrees` and `cd` into it. (2) **Drive the build per `$SHIP_SPEC_EXECUTOR` (default `ralph`).** *Default (`ralph`)* — the Monitored async loop: launch `scripts/ralph.sh <slug>` in a named tmux session and **own the `STATUS: COMPLETE` watch yourself** (poll `.oh/tasks/<slug>/progress.txt` + the loop's tmux liveness; never delegate the watch to a sub-agent that returns early). A ralph iteration **may** call `/delegate` to fan out one story's disjoint files, but `/delegate` does **not** replace the loop. Given multiple **independent** tasks, run one `scripts/ralph.sh` per task in parallel (each its own slug + tmux session) and monitor each to its own `STATUS: COMPLETE`. *Opt-in (`--executor=delegate-advisor`)* — instead orchestrate with `/delegate --plan .oh/tasks/<slug>/prd.json`: spawn `general-purpose` worker(s) that each `cd` into that worktree and run `scripts/ralph.sh <slug>`, monitoring `.oh/tasks/<slug>/progress.txt` for `STATUS: COMPLETE` and the workers' tmux liveness. (3) Run the `/eval` gate (Stage 11). (4) If `.oh/tasks/<slug>/prd.md` has `## Wiki Alignment` with `Impact: REQUIRED`, revise the named `.mifune/skills/wiki/corpus/*.md` entries after implementation so they match the spec's final behavior and acceptance criteria, include DeepWiki-style relevant source files/line citations/system relationships, preserve the recorded DeepWiki comparison, and refresh `.mifune/skills/wiki/corpus/README.md`; verify with `bash evals/probes/wiki-readme-index.sh`. (5) Run `/compact` (Stage 11.5) to clear the implementation context before the audit. (6) In a **separate executor**, run `/pr-audit` for PR `#<PR>` and run `gh pr ready <PR> --repo "$SHIP_SPEC_REPO"` **only if it is classified promotable** (CI green + mergeable + clean); otherwise `gh pr comment` the blocking gate and leave it draft. Never `gh pr merge`. Leave this tmux session alive for attach.
 
 The Advisor owns Stages 11–13 inside its session. The orchestrator's turn ends after launching it and reporting the session name; the ready-for-review PR is produced asynchronously by the Advisor. Each worker commits the implementation on `<prefix>/<N>-<slug>` with a `Submitted-by:` trailer (per `templates/prompt.md`); worktree isolation keeps concurrent work off the shared checkout (avoiding the autopilot shared-checkout contamination class). If `tmux` is unavailable, fall back to running the executor inline (`scripts/ralph.sh <slug>`) and continue to Stage 11 in the foreground. Stage 13 still requires a fresh Stage 12 `/pr-audit` immediately before `gh pr ready`; stale-draft watchdog/heartbeat output cannot substitute for that audit.
 
@@ -382,7 +382,7 @@ Run `/eval` (the Advisor runs this inside its session) while still on the work b
 
 ### Stage 11.25 — Wiki revision gate
 
-If `tasks/<slug>/prd.md` has `## Wiki Alignment` with `Impact: REQUIRED`, the Advisor must revise the named `.mifune/skills/wiki/corpus/*.md` entries after implementation and before `/pr-audit`. The revision must align with:
+If `.oh/tasks/<slug>/prd.md` has `## Wiki Alignment` with `Impact: REQUIRED`, the Advisor must revise the named `.mifune/skills/wiki/corpus/*.md` entries after implementation and before `/pr-audit`. The revision must align with:
 - the PRD's goals, non-goals, acceptance criteria, and completed behavior;
 - the DeepWiki comparison captured in Stage 2.5;
 - `.mifune/skills/wiki/references/schema.md`'s DeepWiki-style standard: relevant source files, line-cited claims, system relationships for pipelines/runtime/architecture topics, and `## See Also` navigation.
@@ -453,12 +453,12 @@ Every stage checks for prior state and resumes rather than duplicating:
 
 | Stage | Resume check | Behavior |
 |---|---|---|
-| 2 | `tasks/<slug>/prd.md` exists | `/prd` runs in update mode (existing skill behavior) |
+| 2 | `.oh/tasks/<slug>/prd.md` exists | `/prd` runs in update mode (existing skill behavior) |
 | 2.5 | `## Wiki Alignment` exists and still matches the PRD goals/stories | Reuse; otherwise update the section before critics |
-| 3 | `tasks/<slug>/critique.md` exists and is recent (<24h) AND prd.md unchanged since | Skip; reuse |
+| 3 | `.oh/tasks/<slug>/critique.md` exists and is recent (<24h) AND prd.md unchanged since | Skip; reuse |
 | 4 | (no resume — pure decision step) | Re-evaluate critique.md every run |
 | 5 | `--issue <N>` provided, or issue with matching title/label exists | If `--issue <N>`: skip creation, reuse `<N>`. Else reuse the matching issue; never create a duplicate |
-| 6 | `tasks/<slug>/prd.json` exists | `/ralph` archives prior + regenerates (existing skill behavior) |
+| 6 | `.oh/tasks/<slug>/prd.json` exists | `/ralph` archives prior + regenerates (existing skill behavior) |
 | 7 | `prompt.md` / `progress.txt` exist | Skip if present |
 | 7.5 | (no resume — context optimization) | Always safe to run; skip silently if `/compact` is unavailable |
 | 8 | Branch exists on target remote | Checkout + commit on top |

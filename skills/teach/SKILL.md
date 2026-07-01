@@ -38,7 +38,7 @@ It is **not** an implementation, audit, retro, or merge gate. `/teach` does not 
 Arguments received: `$ARGUMENTS`
 
 Identify:
-- **Task slug or branch** — prefer `tasks/<slug>/` when present. If a branch is given, derive the slug from its trailing segment only after checking for an exact `tasks/<slug>/` match.
+- **Task slug or branch** — prefer `.oh/tasks/<slug>/` when present. If a branch is given, derive the slug from its trailing segment only after checking for an exact `.oh/tasks/<slug>/` match.
 - **Relevant wiki slug** — use `--wiki <slug>` if provided. Otherwise search likely wiki entries by task terms and by changed conceptual surface. If no relevant entry exists, say so and propose the one entry that should be created via `/wiki ingest` or manual wiki authoring; do not fabricate a source-backed entry.
 - **Mode** — `--dry-run` reports the proposed wiki changes and teaching output without writing.
 
@@ -46,10 +46,10 @@ Identify:
 
 Read the task artifacts first:
 
-1. `tasks/<slug>/prd.md` — intended goals, non-goals, and acceptance criteria.
-2. `tasks/<slug>/progress.txt` — implementation chronology, files changed, commits, and Codebase Patterns.
-3. `tasks/<slug>/prd.json` — story pass state and branch name when present.
-4. `tasks/<slug>/critique.md` — critic findings and mitigations when present.
+1. `.oh/tasks/<slug>/prd.md` — intended goals, non-goals, and acceptance criteria.
+2. `.oh/tasks/<slug>/progress.txt` — implementation chronology, files changed, commits, and Codebase Patterns.
+3. `.oh/tasks/<slug>/prd.json` — story pass state and branch name when present.
+4. `.oh/tasks/<slug>/critique.md` — critic findings and mitigations when present.
 5. Eval/audit/verification evidence when present: `evals/RESULTS.md`, targeted probe output in `progress.txt`, `/audit` or `/pr-audit` notes, CI status, and commit/PR evidence.
 6. The relevant wiki entry (`.mifune/skills/wiki/corpus/<wiki-slug>.md`) before drafting the teaching response.
 

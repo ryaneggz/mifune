@@ -142,7 +142,7 @@ Discard any surviving hypothesis that matches a row in the "What Does NOT Go in 
 | Contains a secret, token, or credential | Memory may be committed |
 | Is raw stdout or command output | Use interpretation, not transcript |
 | Belongs in a commit message or PR body | Duplication causes drift |
-| Is a step-by-step task plan | Plans belong in `tasks/<name>/prd.json` |
+| Is a step-by-step task plan | Plans belong in `.oh/tasks/<name>/prd.json` |
 | Re-derivable in under a minute | Reading one file answers it — don't memorize |
 
 Also discard any hypothesis already captured, verbatim or in substance, in `memory/MEMORY.md` or `context/IDENTITY.md` — link or skip; never double-write. Finally, drop from promotion every hypothesis whose verdict is `refuted` or `inconclusive`, or whose confidence is `low` (these remain in the log only).

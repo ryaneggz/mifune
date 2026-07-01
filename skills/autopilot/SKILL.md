@@ -128,10 +128,10 @@ log_liveness() { mkdir -p "$AUTOPILOT_LOG_ROOT/.oh/crons"; printf '[%s] autopilo
 # SH_WORD_SPLIT by default) — either way the clean check matches nothing and is
 # vacuously satisfied. The array form "${OWNED_PATHS[@]}" expands correctly in both.
 # Write-surface cross-check (known-complete): every tracked path autopilot writes in
-# §2–§7 is within OWNED_PATHS — tasks/, evals/, memory/, CHANGELOG.md, and .claude/ are
+# §2–§7 is within OWNED_PATHS — .oh/tasks/, evals/, memory/, CHANGELOG.md, and .claude/ are
 # the autopilot-written tracked dirs, all in the set — else it is committed by the
 # selected executor on the feature branch or lives under /tmp. No autopilot write lands outside this surface.
-OWNED_PATHS=(.claude/ context/ docs/ scripts/ .oh/crons/ .mifune/skills/wiki/ evals/ memory/ tasks/ CHANGELOG.md)
+OWNED_PATHS=(.claude/ context/ docs/ scripts/ .oh/crons/ .mifune/skills/wiki/ evals/ memory/ .oh/tasks/ CHANGELOG.md)
 
 # Isolated worktree mode (worktree:true cron — the DEFAULT for autopilot): the cron
 # runtime fired this run inside a fresh detached worktree ($CRON_WORKTREE) cut from the
@@ -411,13 +411,13 @@ Dispatch by executor. In the `ship-spec`/`delegate-advisor` deferring modes `/sh
 
 **Delegate-advisor failure compensation** — if `/ship-spec` returns `DRAFT-BLOCKED` because its implement/`/delegate` phase failed, stalled, or left acceptance criteria incomplete (eval/CI reds are reconciled in §6/§7):
 ```bash
-gh pr comment "$PR_NUM" --repo "$AUTOPILOT_REPO" --body "autopilot: /ship-spec did not complete tasks/$SLUG/prd.json (implement/delegate phase). PR left draft; attach to tmux session $SESSION (or agent-ship-$SLUG) and resume. Status: DELEGATE-FAIL."
+gh pr comment "$PR_NUM" --repo "$AUTOPILOT_REPO" --body "autopilot: /ship-spec did not complete .oh/tasks/$SLUG/prd.json (implement/delegate phase). PR left draft; attach to tmux session $SESSION (or agent-ship-$SLUG) and resume. Status: DELEGATE-FAIL."
 ```
 - Memory log `Result: DELEGATE-FAIL`, liveness `DELEGATE-FAIL`, **persist the session** (`[ -n "$KEEP" ] && touch "$KEEP"`), leave `ACTIVE_MARKER` in place for duplicate suppression, the canonical scoped restore (`git checkout development -- "${OWNED_PATHS[@]}"` then `git checkout development`, then assert `git diff --quiet -- "${OWNED_PATHS[@]}" && git diff --cached --quiet -- "${OWNED_PATHS[@]}" || { echo "ERROR: autopilot restore left a dirty owned tree"; exit 1; }` and `[ "$(git rev-parse --abbrev-ref HEAD)" = "development" ] || exit 1`), exit 1 (non-destructive — never auto-close the issue or PR).
 
 #### `delegate-advisor` — defer to `/ship-spec` with the `/delegate` worker fan-out
 
-Same deferral as `ship-spec`, but autopilot passes `--executor=delegate-advisor` to `/ship-spec`, so Stage 10 uses the legacy `/delegate --plan tasks/<slug>/prd.json` worker fan-out instead of the Advisor-monitored ralph loop. Autopilot still does **not** run its own `/compact`/`/delegate`/`/eval`; the same delegate-advisor failure compensation above applies. Reconcile in §6/§7.
+Same deferral as `ship-spec`, but autopilot passes `--executor=delegate-advisor` to `/ship-spec`, so Stage 10 uses the legacy `/delegate --plan .oh/tasks/<slug>/prd.json` worker fan-out instead of the Advisor-monitored ralph loop. Autopilot still does **not** run its own `/compact`/`/delegate`/`/eval`; the same delegate-advisor failure compensation above applies. Reconcile in §6/§7.
 
 #### `ralph` fallback (legacy inline)
 
@@ -427,13 +427,13 @@ When `EXECUTOR=ralph` (from `--executor=ralph` or `AUTOPILOT_EXECUTOR=ralph`), b
 .oh/scripts/ralph.sh "$SLUG"
 ```
 
-Then **bash-poll** `tasks/$SLUG/progress.txt` for the terminal sentinel. Each round is bounded under the Bash tool ceiling; **re-run the round** until it reports `RALPH: DONE` or `RALPH: SESSION-GONE`, up to ~8 rounds (~64 min wall-clock):
+Then **bash-poll** `.oh/tasks/$SLUG/progress.txt` for the terminal sentinel. Each round is bounded under the Bash tool ceiling; **re-run the round** until it reports `RALPH: DONE` or `RALPH: SESSION-GONE`, up to ~8 rounds (~64 min wall-clock):
 
 ```bash
 # one poll round — re-run until it prints RALPH: DONE or RALPH: SESSION-GONE
 end=$(( $(date +%s) + 480 ))
 while [ "$(date +%s)" -lt "$end" ]; do
-  grep -q '^STATUS: COMPLETE' "tasks/$SLUG/progress.txt" && { echo "RALPH: DONE"; break; }
+  grep -q '^STATUS: COMPLETE' ".oh/tasks/$SLUG/progress.txt" && { echo "RALPH: DONE"; break; }
   tmux has-session -t "$SLUG" 2>/dev/null || { echo "RALPH: SESSION-GONE"; break; }
   sleep 30
 done
@@ -445,7 +445,7 @@ done
 **Ralph-incomplete compensation** — the partial implementation is committed on the branch and the four-file task state is resumable:
 ```bash
 tmux kill-session -t "$SLUG" 2>/dev/null || true
-gh pr comment "$PR_NUM" --repo "$AUTOPILOT_REPO" --body "autopilot: Ralph loop did not reach STATUS: COMPLETE (timeout / exhausted / error). PR left draft; tasks/$SLUG/ state is resumable — re-run \`.oh/scripts/ralph.sh $SLUG\` to continue. Status: RALPH-INCOMPLETE."
+gh pr comment "$PR_NUM" --repo "$AUTOPILOT_REPO" --body "autopilot: Ralph loop did not reach STATUS: COMPLETE (timeout / exhausted / error). PR left draft; .oh/tasks/$SLUG/ state is resumable — re-run \`.oh/scripts/ralph.sh $SLUG\` to continue. Status: RALPH-INCOMPLETE."
 ```
 - Memory log `Result: RALPH-INCOMPLETE`, liveness `RALPH-INCOMPLETE`, **persist the session** (`[ -n "$KEEP" ] && touch "$KEEP"`), leave `ACTIVE_MARKER` in place for duplicate suppression, the canonical scoped restore (`git checkout development -- "${OWNED_PATHS[@]}"` then `git checkout development`, then assert `git diff --quiet -- "${OWNED_PATHS[@]}" && git diff --cached --quiet -- "${OWNED_PATHS[@]}" || { echo "ERROR: autopilot restore left a dirty owned tree"; exit 1; }` and `[ "$(git rev-parse --abbrev-ref HEAD)" = "development" ] || exit 1`), exit 1 (non-destructive — never auto-close the issue or PR).
 
@@ -513,7 +513,7 @@ git push "$AUTOPILOT_REMOTE" HEAD
 
 **Release the overlap lock before restoring** (mandatory for kept Pi sessions): after any terminal PR state (`PR-READY`, `PR-DRAFT-CI-RED`, or `PR-DRAFT-EVAL-RED`), run `release_overlap_lock` before the restore. Kept Pi sessions intentionally stay alive for manual review, so the cron wrapper may not regain control to remove `/tmp/cron-autopilot.pid`; the skill must clear `$CRON_OVERLAP_PIDFILE` itself once the run is terminal. Incomplete executor paths (`DELEGATE-FAIL`, `RALPH-INCOMPLETE`) keep the lock because manual continuation is expected.
 
-**Restore branch** (root mode only — when `$CRON_WORKTREE` is set the whole restore is skipped: a worktree run never touched root and its worktree is discarded by the runtime/heartbeat, so there is nothing to restore. In root mode it is mandatory — the next cron fire's §1 branch guard only passes on `development`). Canonical **scoped restore** — a non-destructive two-step that discards only this run's own OWNED-path residue, then switches HEAD. Committed work is safe on the branch / draft PR. The scope step MUST precede the branch switch (it clears owned residue that would otherwise make a non-forced `git checkout development` refuse). It touches only **tracked** files, so an untracked owned-path orphan from a mid-run crash is NOT auto-removed (`git clean` is deliberately NOT used — too destructive across `tasks/`, `memory/`, `.claude/`); clean such orphans manually. Any **foreign** change OUTSIDE the owned surface — modified or staged (e.g. `.codex/config.toml`) — survives byte-for-byte (left in place / left staged) and is ignored by the scoped assertion and the next §1 check:
+**Restore branch** (root mode only — when `$CRON_WORKTREE` is set the whole restore is skipped: a worktree run never touched root and its worktree is discarded by the runtime/heartbeat, so there is nothing to restore. In root mode it is mandatory — the next cron fire's §1 branch guard only passes on `development`). Canonical **scoped restore** — a non-destructive two-step that discards only this run's own OWNED-path residue, then switches HEAD. Committed work is safe on the branch / draft PR. The scope step MUST precede the branch switch (it clears owned residue that would otherwise make a non-forced `git checkout development` refuse). It touches only **tracked** files, so an untracked owned-path orphan from a mid-run crash is NOT auto-removed (`git clean` is deliberately NOT used — too destructive across `.oh/tasks/`, `memory/`, `.claude/`); clean such orphans manually. Any **foreign** change OUTSIDE the owned surface — modified or staged (e.g. `.codex/config.toml`) — survives byte-for-byte (left in place / left staged) and is ignored by the scoped assertion and the next §1 check:
 ```bash
 release_overlap_lock                         # terminal PR state reached; clear cron overlap lock before keeping the Pi session alive
 if [ -z "${CRON_WORKTREE:-}" ]; then         # root mode ONLY — a worktree run is ephemeral (runtime/heartbeat removes the worktree); there is nothing in root to restore
@@ -572,8 +572,8 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 | `PR-DRAFT-CI-RED` | PR left draft because the PR was not promotable per `/pr-audit` (CI red/pending or conflicts) — set by `/ship-spec` in the ship-spec/delegate-advisor modes, or by the ralph fallback's own `/pr-audit` gate |
 | `PR-DRAFT-EVAL-RED` | PR left draft because `/eval` reported a NEW (green→red) probe regression or a non-zero runner exit (inside `/ship-spec` in the ship-spec/delegate-advisor modes, or autopilot's inline `/eval` in ralph mode) |
 | `HALT-CRITIC-GATE` | `/ship-spec` critic gate rejected the spec; ticket labeled `autopilot-blocked`, no PR opened |
-| `RALPH-INCOMPLETE` | §5 Ralph fallback loop did not reach `STATUS: COMPLETE` (timeout, loop died, or all harnesses exhausted) after `/ship-spec` opened a PR; PR left draft — `tasks/$SLUG/` state is resumable via `.oh/scripts/ralph.sh $SLUG` |
-| `DELEGATE-FAIL` | `/ship-spec`'s implement phase (the Advisor-monitored ralph loop, or the `/delegate` fan-out under `--executor=delegate-advisor`) failed or stalled on `tasks/$SLUG/prd.json` in the ship-spec/delegate-advisor modes; PR left draft and the `autopilot-<branch>` / `agent-ship-<slug>` session is left alive for manual continuation |
+| `RALPH-INCOMPLETE` | §5 Ralph fallback loop did not reach `STATUS: COMPLETE` (timeout, loop died, or all harnesses exhausted) after `/ship-spec` opened a PR; PR left draft — `.oh/tasks/$SLUG/` state is resumable via `.oh/scripts/ralph.sh $SLUG` |
+| `DELEGATE-FAIL` | `/ship-spec`'s implement phase (the Advisor-monitored ralph loop, or the `/delegate` fan-out under `--executor=delegate-advisor`) failed or stalled on `.oh/tasks/$SLUG/prd.json` in the ship-spec/delegate-advisor modes; PR left draft and the `autopilot-<branch>` / `agent-ship-<slug>` session is left alive for manual continuation |
 | `SPAWNED_WORKTREE` | Emitted by the cron runtime (not this skill): a `worktree: true` fire spawned in an isolated `.worktrees/cron/<session>` worktree (the default for autopilot) so the root checkout stays clean |
 | `SKIPPED_OVERLAP` | Emitted by the cron runtime (not this skill): a previous fire of this id was still running with `overlap: false`. **No longer reachable for autopilot** (`worktree: true` always isolates instead of skipping); retained for non-worktree crons (heartbeat/cleanup/eval) |
 | `ERR_WORKTREE` | Emitted by the cron runtime (not this skill): a `worktree: true` fire could not create its isolated worktree (no base ref, or `git worktree add` failed). A surfaced FAILURE, never a silent skip |

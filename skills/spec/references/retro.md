@@ -14,7 +14,7 @@ lessons.
 scientific session-closing pass — falsifiable hypotheses, evidence for *and* against, a
 verdict + confidence, and a propose-then-confirm promotion into `memory/MEMORY.md` /
 `context/IDENTITY.md`. `retro` is the execution-side application of it: point `/retro`
-at the just-built `tasks/<slug>/` run so the reflection is anchored to that unit's
+at the just-built `.oh/tasks/<slug>/` run so the reflection is anchored to that unit's
 artifacts (`prd.md`, `progress.txt`, `prd.json`, `critique.md`, the `/audit` evidence)
 rather than the whole ambient session.
 
@@ -28,10 +28,10 @@ records that the execution stage ran its retro.
 
 | Arg | Meaning |
 |-----|---------|
-| `<slug>` | The task slug — the retro reads `tasks/<slug>/` artifacts as its primary signal source. Required. |
+| `<slug>` | The task slug — the retro reads `.oh/tasks/<slug>/` artifacts as its primary signal source. Required. |
 | `--dry-run` | Passed through to `/retro`: write only the log entry (`Result: DRY-RUN`); never write `MEMORY.md`/`IDENTITY.md`. |
 
-If `tasks/<slug>/` has no `progress.txt`/`prd.md`, there is no build to reflect on — say so
+If `.oh/tasks/<slug>/` has no `progress.txt`/`prd.md`, there is no build to reflect on — say so
 and fall back to a plain `/retro` on the session, or skip with a logged note.
 
 ---

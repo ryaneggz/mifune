@@ -40,7 +40,7 @@ is a downstream concern and remediation belongs to the build step on
 
 | Arg | Meaning |
 |-----|---------|
-| `<slug>` | The task slug — locates `tasks/<slug>/prd.json` and `tasks/<slug>/progress.txt`. Required. |
+| `<slug>` | The task slug — locates `.oh/tasks/<slug>/prd.json` and `.oh/tasks/<slug>/progress.txt`. Required. |
 | `--pr <N>` | The PR for this unit, if one exists. When set, gate 3 uses `/pr-audit` (which reads `statusCheckRollup`, subsuming `/ci-status`). |
 | `--branch <branch>` | The work branch. Used by gate 3's `/ci-status` fallback when there is no PR yet (e.g. an autopilot pre-PR audit). Defaults to the current branch. |
 
@@ -60,7 +60,7 @@ Every user story in the task graph must be marked complete. The ralph loop flips
 when **zero** stories remain unfinished:
 
 ```bash
-SLUG="$1"; PRD="tasks/$SLUG/prd.json"
+SLUG="$1"; PRD=".oh/tasks/$SLUG/prd.json"
 [ -f "$PRD" ] || { echo "FAIL gate1: no $PRD"; exit 1; }
 unfinished=$(jq '[.userStories[] | select(.passes != true)] | length' "$PRD")
 total=$(jq '.userStories | length' "$PRD")
@@ -105,7 +105,7 @@ If the task graph contains any browser-verification criteria, the UI must be
 confirmed visually:
 
 ```bash
-grep -qi "agent-browser\|Verify in browser" "tasks/$SLUG/prd.json" && echo "UI gate applies"
+grep -qi "agent-browser\|Verify in browser" ".oh/tasks/$SLUG/prd.json" && echo "UI gate applies"
 ```
 
 When it applies, drive `/agent-browser` against the running app for the changed

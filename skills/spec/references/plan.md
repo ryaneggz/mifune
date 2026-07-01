@@ -1,4 +1,4 @@
-# `/spec plan` — produce the `tasks/<slug>/` folder
+# `/spec plan` — produce the `.oh/tasks/<slug>/` folder
 
 > Detail doc for the **`plan`** subcommand of the `/spec` skill
 > (`.mifune/skills/spec/SKILL.md`). Argument form:
@@ -8,12 +8,12 @@
 
 The **plan** node of the `spec-*` family (`AGENTS.md § The Workflow`:
 `select → spec-plan ⇄ spec-critique → spec-execute → merge → reset|clean`). It takes
-a topic / plan file / issue and produces the **`tasks/<slug>/` folder** — the universal
+a topic / plan file / issue and produces the **`.oh/tasks/<slug>/` folder** — the universal
 interface every other `/spec` node is pointed at.
 
 **Core principle: plan cheaply, commit nothing.** `plan` writes only local files
-under `tasks/<slug>/`. It runs no critics and creates no GitHub-side state — that keeps
-the plan ⇄ critique loop fully reversible (`rm -rf tasks/<slug>/`) until `/spec critique`
+under `.oh/tasks/<slug>/`. It runs no critics and creates no GitHub-side state — that keeps
+the plan ⇄ critique loop fully reversible (`rm -rf .oh/tasks/<slug>/`) until `/spec critique`
 clears it (`AGENTS.md § The Workflow` invariant: critic-before-commitment).
 
 This is the decomposed form of `/ship-spec` Stages 1–2.5, 6–7. `/ship-spec` remains the
@@ -49,9 +49,9 @@ Run these in order; each is an existing primitive — compose, don't re-derive.
    second segment, tmux session name. Choose once; reject and ask for a shorter name if
    invalid. `--slug` overrides derivation.
 
-2. **`/prd` → `tasks/<slug>/prd.md`** (Stage 2). Invoke the `prd` skill with `<topic>`
+2. **`/prd` → `.oh/tasks/<slug>/prd.md`** (Stage 2). Invoke the `prd` skill with `<topic>`
    (or `--plan` content, with an explicit instruction to skip clarifying questions when a
-   plan is supplied). Verify `tasks/<slug>/prd.md` exists before continuing.
+   plan is supplied). Verify `.oh/tasks/<slug>/prd.md` exists before continuing.
 
 3. **Wiki alignment** (Stage 2.5). Read `.mifune/skills/wiki/references/schema.md`, compare the topic against
    the public DeepWiki for this repo, and record a `## Wiki Alignment` section in
@@ -60,24 +60,24 @@ Run these in order; each is an existing primitive — compose, don't re-derive.
    exact shape is `/ship-spec` Stage 2.5; reuse it verbatim so `/spec execute`'s wiki gate
    can read it.
 
-4. **`/ralph` → `tasks/<slug>/prd.json`** (Stage 6). Invoke the `ralph` skill:
-   `tasks/<slug>/ --issue <N> --prefix <prefix>`. It writes `prd.json` with
+4. **`/ralph` → `.oh/tasks/<slug>/prd.json`** (Stage 6). Invoke the `ralph` skill:
+   `.oh/tasks/<slug>/ --issue <N> --prefix <prefix>`. It writes `prd.json` with
    `branchName: <prefix>/<N>-<slug>`. Verify it parses
-   (`node -e "require('./tasks/<slug>/prd.json')"`). **`/ralph` hard-fails without
+   (`node -e "require('./.oh/tasks/<slug>/prd.json')"`). **`/ralph` hard-fails without
    `--issue <N>`** (the branch name embeds it) — in the canonical flow `<N>` is the issue
    `/autopilot` selected; for a fresh manual topic with no issue, open one first per `/git`
    or use `/ship-spec`. `plan` consumes the number; it never creates the issue.
 
 5. **Scaffold `prompt.md` + `progress.txt`** (Stage 7). Clone
    `.claude/skills/ship-spec/templates/prompt.md`, substituting `<slug>`,
-   `<prefix>/<N>-<slug>`, and `#<issue>`. Write `tasks/<slug>/progress.txt` with the
+   `<prefix>/<N>-<slug>`, and `#<issue>`. Write `.oh/tasks/<slug>/progress.txt` with the
    `# progress` header only.
 
 Verify the four-file contract before handing off:
 
 ```bash
 for f in prd.md prd.json prompt.md progress.txt; do
-  [ -f "tasks/<slug>/$f" ] || { echo "MISSING: $f"; exit 1; }
+  [ -f ".oh/tasks/<slug>/$f" ] || { echo "MISSING: $f"; exit 1; }
 done
 ```
 
@@ -85,7 +85,7 @@ done
 
 ## Output
 
-`tasks/<slug>/` holding the four-file contract (`prd.md`, `prd.json`, `prompt.md`,
+`.oh/tasks/<slug>/` holding the four-file contract (`prd.md`, `prd.json`, `prompt.md`,
 `progress.txt`). No `critique.md` yet (that is `/spec critique`). No issue, branch, or PR.
 
 ---
