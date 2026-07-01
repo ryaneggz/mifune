@@ -55,7 +55,7 @@ export const DEFAULT_WEIGHTS = Object.freeze({
 75 of the 100 points are **signals we own** (self-consistency, `/eval` rc, `/audit`
 verdict, cost); the remaining 25 is the one model-judge coefficient. The vector is
 `Object.freeze`d and version-controlled so tuning goes through review (as `/benchmark`);
-`evals/probes/weigh-scorer-contract.sh` pins the frozen keys + the 100-sum.
+`.oh/evals/probes/weigh-scorer-contract.sh` pins the frozen keys + the 100-sum.
 
 ## Weights validation (`validateWeights`)
 

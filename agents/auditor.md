@@ -51,10 +51,10 @@ no hand-run probe, no bespoke staleness scorer). If a skill owns it, you invoke 
 <!-- auditor-scope-boundary -->
 **The auditor MANAGES — it never reimplements — the seven audit skills: it routes to
 `/harness-audit` (whole-harness health via 4 parallel auditors), `/pr-audit` (the entire
-open-PR queue in one bulk query), `/audit` (ONE implementation vs its `tasks/<slug>/prd.json`),
+open-PR queue in one bulk query), `/audit` (ONE implementation vs its `.oh/tasks/<slug>/prd.json`),
 `/context-audit` (the default-loaded context budget), `/skill-lint` (skill staleness),
 `/drift-check` (origin↔upstream / branch-behind / cron-staleness drift), and `/eval` (the
-deterministic `evals/probes/*.sh` suite); it is orthogonal to the `critic` agent, which
+deterministic `.oh/evals/probes/*.sh` suite); it is orthogonal to the `critic` agent, which
 adversarially reviews ONE task's plan during `/spec critique` — not the audit skills.**
 
 This agent audits **harness infrastructure only** — skills, rules, docs, scripts, crons,
@@ -78,11 +78,11 @@ non-overlapping reason the family exists.
 |-------|--------------------------|--------------------|-----------|----------------|
 | `/harness-audit` | The whole harness (4 parallel PM/Implementer/Critic/Explorer auditors) | Tier 1/2/3 + Next 3 Actions | read-only (spawns agents) | PRs; one implementation |
 | `/pr-audit` | The entire open-PR queue (one `gh pr list --json`) | bucket per PR (ready / CI-fail / conflict / draft …) | read-only by default; `--proof`/`--label-apply`/`--close-stale` mutate | diff-level correctness (→ `/code-review`) |
-| `/audit` | ONE implementation vs its `tasks/<slug>/prd.json` | `AUDIT-PASS` / `AUDIT-FAIL` (names the gate) | read-only | the harness; the queue |
+| `/audit` | ONE implementation vs its `.oh/tasks/<slug>/prd.json` | `AUDIT-PASS` / `AUDIT-FAIL` (names the gate) | read-only | the harness; the queue |
 | `/context-audit` | The default-loaded context budget | `KEEP` / `TRIM` / `DEMOTE` / `CUT` (+ Tier-2 ablation) | read-only (ablation restores) | on-demand context |
 | `/skill-lint` | Skill staleness across 5 dimensions | `CURRENT` / `STALE` / `BROKEN` / `DELETE` | read-only | skill logic bugs |
 | `/drift-check` | Framework / branch-behind / cron-staleness drift | `OK` per class, else `DRIFT:` aggregate | read-only (only `git fetch`) | remediation (reports, never fixes) |
-| `/eval` | The deterministic probe suite vs real state | `PASS` / `REGRESSION` / `SKIPPED` | writes `evals/RESULTS.md` only | behavioral / LLM-judge evals |
+| `/eval` | The deterministic probe suite vs real state | `PASS` / `REGRESSION` / `SKIPPED` | writes `.oh/evals/RESULTS.md` only | behavioral / LLM-judge evals |
 
 ## Dispatch Decision Table
 
@@ -93,7 +93,7 @@ Match the request's signal to its target class, route to the skill(s), in the st
 | "is the harness healthy", "find improvements", "what should we fix", "system review" | whole harness | `/harness-audit` `[--focus <area>]` | expensive (spawns 4 agents) — run **last** in a campaign |
 | "check/triage the open PRs", "what's stuck", "PR backlog", "before a merge sweep" | open-PR queue | `/pr-audit` | read-only default; add `--deep`/`--proof`/`--label-apply`/`--close-stale` only on explicit ask |
 | "is `<slug>` done/promotable", "verify impl vs prd.json", "go/no-go on this build" | one implementation | `/audit <slug> [--pr N \| --branch b]` | single PASS/FAIL; it internally composes eval + pr-audit(one PR) + browser — do not pre-run those yourself |
-| "what's in my context", "context budget", "signal vs noise in rules", "before/after editing context/ or CLAUDE.md" | default-loaded context | `/context-audit` `[--ablate <file>]` | `--ablate` for a provable cut |
+| "what's in my context", "context budget", "signal vs noise in rules", "before/after editing .oh/context/ or CLAUDE.md" | default-loaded context | `/context-audit` `[--ablate <file>]` | `--ablate` for a provable cut |
 | "are my skills stale", "skill health", "skill lint" | skills | `/skill-lint [all\|root\|workspace\|<name>]` | deterministic, cheap |
 | "check for drift", "behind upstream", "is a merged cron running", "long session gap" | drift classes | `/drift-check` | read-only, **cheapest — run first** |
 | "run evals", "probe suite", "is lesson X green", "benchmark the harness" | probe suite / state | `/eval [--probe id \| --tier A]` | deterministic, cheap; for a filtered run prefer the Bash path `bash .claude/skills/eval/run.sh --probe <id>` (the SKILL.md does not bind `$ARGUMENTS`) |
@@ -304,7 +304,7 @@ is surfaced rather than double-counted.
 **Action**: Decline within the audit family and redirect — diff-level correctness is
 `/code-review`, not the queue-level `/pr-audit`. Offer the in-family adjacent: `/pr-audit`
 (or `/pr-audit --deep` PR #312) for *triage/CI/mergeability*, and `/audit <slug>` if #312 has
-a `tasks/<slug>/prd.json` and you want a per-unit PASS/FAIL. State the boundary explicitly so
+a `.oh/tasks/<slug>/prd.json` and you want a per-unit PASS/FAIL. State the boundary explicitly so
 the user picks the right surface.
 
 ## Registration

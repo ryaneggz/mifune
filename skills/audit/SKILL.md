@@ -40,7 +40,7 @@ is a downstream concern and remediation belongs to the build step on
 
 | Arg | Meaning |
 |-----|---------|
-| `<slug>` | The task slug — locates `tasks/<slug>/prd.json` and `tasks/<slug>/progress.txt`. Required. |
+| `<slug>` | The task slug — locates `.oh/tasks/<slug>/prd.json` and `.oh/tasks/<slug>/progress.txt`. Required. |
 | `--pr <N>` | The PR for this unit, if one exists. When set, gate 3 uses `/pr-audit` (which reads `statusCheckRollup`, subsuming `/ci-status`). |
 | `--branch <branch>` | The work branch. Used by gate 3's `/ci-status` fallback when there is no PR yet (e.g. an autopilot pre-PR audit). Defaults to the current branch. |
 
@@ -60,7 +60,7 @@ Every user story in the task graph must be marked complete. The ralph loop flips
 when **zero** stories remain unfinished:
 
 ```bash
-SLUG="$1"; PRD="tasks/$SLUG/prd.json"
+SLUG="$1"; PRD=".oh/tasks/$SLUG/prd.json"
 [ -f "$PRD" ] || { echo "FAIL gate1: no $PRD"; exit 1; }
 unfinished=$(jq '[.userStories[] | select(.passes != true)] | length' "$PRD")
 total=$(jq '.userStories | length' "$PRD")
@@ -84,7 +84,7 @@ bash .claude/skills/eval/run.sh ; rc=$?
 
 Block only on a **new** `green→red` regression or a non-zero runner exit. A
 pre-existing red with an unchanged delta is non-gating but MUST be disclosed in
-the verdict. (Mirrors `/ship-spec` Stage 11 and `evals/probes/eval-gate.sh`.)
+the verdict. (Mirrors `/ship-spec` Stage 11 and `.oh/evals/probes/eval-gate.sh`.)
 
 ### Gate 3 — Promotable / CI state
 
@@ -105,7 +105,7 @@ If the task graph contains any browser-verification criteria, the UI must be
 confirmed visually:
 
 ```bash
-grep -qi "agent-browser\|Verify in browser" "tasks/$SLUG/prd.json" && echo "UI gate applies"
+grep -qi "agent-browser\|Verify in browser" ".oh/tasks/$SLUG/prd.json" && echo "UI gate applies"
 ```
 
 When it applies, drive `/agent-browser` against the running app for the changed
@@ -135,14 +135,14 @@ red from gate 2.
 - **Fix anything.** Remediation is the `implement` node's job on `AUDIT-FAIL`.
 - **Fork `/pr-audit`.** It consults the existing fleet-triage tool for one PR; it
   never reimplements the bulk query (which is probe-pinned by
-  `evals/probes/autopilot-executor-toggle.sh`).
+  `.oh/evals/probes/autopilot-executor-toggle.sh`).
 - **Re-run a passing gate.** Fail-fast: stop at the first failing gate.
 
 ---
 
 ## Memory Protocol
 
-After a run, append to `memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+After a run, append to `.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## audit -- HH:MM UTC

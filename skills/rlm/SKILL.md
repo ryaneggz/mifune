@@ -50,7 +50,7 @@ candidate answers a chunk yields. This skill never re-implements selection — i
 ## When to use
 
 - `/rlm <artifact> "<query>"` to answer a question over an artifact too large to read
-  whole (a big log under `crons/.cron.log`, a large corpus file, a whole directory).
+  whole (a big log under `.oh/crons/.cron.log`, a large corpus file, a whole directory).
 - As a sub-step of `/weigh` when the cohort being sampled spans a large artifact that
   must itself be decomposed before sampling.
 
@@ -145,10 +145,10 @@ Write the recursion trace (chunk map used, per-chunk sub-agent findings, the
 to the **gitignored** path:
 
 ```
-memory/<UTC-date>/rlm-<slug>-<HHMMSS>.json     # UTC-date = date -u +%Y-%m-%d
+.oh/memory/<UTC-date>/rlm-<slug>-<HHMMSS>.json     # UTC-date = date -u +%Y-%m-%d
 ```
 
-Then append a one-line entry to `memory/<UTC-date>/log.md` per the Memory Improvement
+Then append a one-line entry to `.oh/memory/<UTC-date>/log.md` per the Memory Improvement
 Protocol (`.mifune/skills/retro/references/memory-protocol.md`). The trace makes the
 recursion auditable; it is a consumption artifact, never staged or committed. Announce
 `RESULT: RLM-COMPLETE`.

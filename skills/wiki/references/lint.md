@@ -18,7 +18,7 @@ and confidence lifecycle all live in `.mifune/skills/wiki/references/schema.md`.
 defers to those rules — it does not redefine them.
 
 `.mifune/skills/wiki/corpus/README.md` is generated state, not hand-authored inventory. The tier-A
-`evals/probes/wiki-readme-index.sh` probe reconstructs the expected Index from
+`.oh/evals/probes/wiki-readme-index.sh` probe reconstructs the expected Index from
 current `.mifune/skills/wiki/corpus/*.md` frontmatter and fails when this skill's committed output
 falls out of sync.
 
@@ -420,10 +420,10 @@ UTC time first:
 ```bash
 date -u +%H:%M
 TODAY=$(date -u +%Y-%m-%d)
-mkdir -p "$HARNESS/memory/$TODAY"
+mkdir -p "$HARNESS/.oh/memory/$TODAY"
 ```
 
-Append to `memory/<UTC-date>/log.md`:
+Append to `.oh/memory/<UTC-date>/log.md`:
 
 ```markdown
 ## /wiki lint -- HH:MM UTC
@@ -454,7 +454,7 @@ Then apply the qualify/improve loop per `.mifune/skills/retro/references/memory-
 
 - Did any finding reveal a gap in the wiki schema or cross-link conventions?
 - Did the atomic write step surface an edge case worth capturing?
-- If yes, propose a `memory/MEMORY.md` addition.
+- If yes, propose a `.oh/memory/MEMORY.md` addition.
 
 See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memory Improvement Protocol.
 

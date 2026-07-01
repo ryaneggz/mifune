@@ -1,6 +1,6 @@
 # Ralph iteration — <slug>
 
-You are one iteration of a Ralph loop implementing the `<slug>` task. The full plan is in `tasks/<slug>/prd.md` and the structured task list is in `tasks/<slug>/prd.json`. The loop calls you again until `progress.txt` contains a line `STATUS: COMPLETE`.
+You are one iteration of a Ralph loop implementing the `<slug>` task. The full plan is in `.oh/tasks/<slug>/prd.md` and the structured task list is in `.oh/tasks/<slug>/prd.json`. The loop calls you again until `progress.txt` contains a line `STATUS: COMPLETE`.
 
 ## Execution model
 
@@ -18,10 +18,10 @@ Pick **one** user story, implement it, commit, mark it `passes: true`, and appen
 ## Steps every iteration
 
 1. **Read context** — in this order:
-   - `tasks/<slug>/prd.json` — find the lowest-`priority` story where `passes: false`. That is your story for this iteration.
-   - `tasks/<slug>/progress.txt` — read the "Codebase Patterns" section at the top (if any) and the most recent few iterations to see what's been done.
-   - `tasks/<slug>/critique.md` — if present, the critic findings the stories must satisfy.
-   - If `tasks/<slug>/prd.md` contains `## Wiki Alignment`, read it before choosing the story. When `Impact: REQUIRED`, the relevant story must keep wiki updates aligned with the PRD and the recorded DeepWiki comparison.
+   - `.oh/tasks/<slug>/prd.json` — find the lowest-`priority` story where `passes: false`. That is your story for this iteration.
+   - `.oh/tasks/<slug>/progress.txt` — read the "Codebase Patterns" section at the top (if any) and the most recent few iterations to see what's been done.
+   - `.oh/tasks/<slug>/critique.md` — if present, the critic findings the stories must satisfy.
+   - If `.oh/tasks/<slug>/prd.md` contains `## Wiki Alignment`, read it before choosing the story. When `Impact: REQUIRED`, the relevant story must keep wiki updates aligned with the PRD and the recorded DeepWiki comparison.
    - `.mifune/skills/wiki/references/schema.md` when your story touches `.mifune/skills/wiki/corpus/` or the PRD's Wiki Alignment section says `Impact: REQUIRED`.
    - `.claude/skills/git/SKILL.md` for branch + commit conventions.
    - `.mifune/skills/t3/references/sandbox-processes.md` for tmux session conventions if your story spawns processes.
@@ -104,12 +104,12 @@ If the chosen story cannot be completed this iteration:
 - **Confine writes** to repo-tracked paths. Do not write outside the repo or to `~/`.
 - **Phase ordering matters.** Stories are priority-ordered by dependency — implement them in `priority` order. If a story depends on an artifact a later story creates, it is mis-ordered; surface it rather than implementing out of order.
 - **CHANGELOG discipline.** Per `.claude/skills/git/SKILL.md`, every story with user-visible impact must add an entry under `## [Unreleased]` in the same commit. The PRD's individual stories spell out which `### Added`, `### Removed`, `### Changed` section to use.
-- **Wiki alignment discipline.** If the PRD says `Wiki Alignment` is `REQUIRED`, update the named wiki entries in the same implementation branch so they match the final spec behavior, preserve the DeepWiki comparison, and pass `bash evals/probes/wiki-readme-index.sh`.
+- **Wiki alignment discipline.** If the PRD says `Wiki Alignment` is `REQUIRED`, update the named wiki entries in the same implementation branch so they match the final spec behavior, preserve the DeepWiki comparison, and pass `bash .oh/evals/probes/wiki-readme-index.sh`.
 - **Don't modify completed stories** unless the current story explicitly requires it.
 
 ## Reference
 
-- PRD: `tasks/<slug>/prd.md`
-- Structured stories: `tasks/<slug>/prd.json`
+- PRD: `.oh/tasks/<slug>/prd.md`
+- Structured stories: `.oh/tasks/<slug>/prd.json`
 - Branch: `<prefix>/<N>-<slug>`
 - Issue: #<issue>

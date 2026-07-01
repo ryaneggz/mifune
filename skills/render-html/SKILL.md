@@ -3,7 +3,7 @@ name: render-html
 description: |
   Render an artifact (or in-context material) as a bespoke, self-contained
   HTML file for one-shot human consumption. Writes to
-  memory/<UTC-date>/<slug>.html. Output is gitignored — these are
+  .oh/memory/<UTC-date>/<slug>.html. Output is gitignored — these are
   consumption artifacts, not source.
   TRIGGER when: asked to render HTML, generate an HTML report, visualize an
   audit/council/lint/digest, "make this readable", "make a dashboard for",
@@ -33,9 +33,9 @@ Common targets in this harness:
 ## When NOT to use
 
 Skip when the artifact is **source or pipeline input** — Markdown stays the substrate of the harness:
-- PRDs (`tasks/*/prd.md`), briefings, commit messages, PR bodies, `CHANGELOG.md`
-- Memory log entries themselves (`memory/<date>/log.md`)
-- Skill/identity sources (`CLAUDE.md`, `context/`, `.claude/skills/`)
+- PRDs (`.oh/tasks/*/prd.md`), briefings, commit messages, PR bodies, `CHANGELOG.md`
+- Memory log entries themselves (`.oh/memory/<date>/log.md`)
+- Skill/identity sources (`CLAUDE.md`, `.oh/context/`, `.claude/skills/`)
 - Agent-to-agent handoffs (advisor → executor briefings)
 
 If asked to render any of the above, refuse and explain.
@@ -60,8 +60,8 @@ If `slug` collides with an existing file in today's date directory, append `-2`,
 
 ```bash
 TODAY=$(date -u +%Y-%m-%d)
-mkdir -p "memory/$TODAY"
-OUT="memory/$TODAY/<slug>.html"
+mkdir -p ".oh/memory/$TODAY"
+OUT=".oh/memory/$TODAY/<slug>.html"
 ```
 
 Always use UTC. Always create the directory first.
@@ -98,13 +98,13 @@ Use the `Write` tool. Confirm the byte size is plausible (>2 KB for any non-triv
 ### 6. Report to the user
 
 Return three lines:
-1. Absolute path: `memory/<date>/<slug>.html`
+1. Absolute path: `.oh/memory/<date>/<slug>.html`
 2. A one-sentence summary of what was rendered (so the user knows what they'll see).
-3. The open command suggestion: `/agent-browser file://$(pwd)/memory/<date>/<slug>.html` (or `open file://...` if running locally).
+3. The open command suggestion: `/agent-browser file://$(pwd)/.oh/memory/<date>/<slug>.html` (or `open file://...` if running locally).
 
 ### 7. Memory Protocol
 
-Append to `memory/<UTC-date>/log.md`:
+Append to `.oh/memory/<UTC-date>/log.md`:
 
 ```markdown
 ## render-html -- HH:MM UTC
@@ -112,12 +112,12 @@ Append to `memory/<UTC-date>/log.md`:
 - **Slug**: <slug>
 - **Source**: <path or "in-context">
 - **Intent**: <one-line>
-- **Path**: memory/<date>/<slug>.html
+- **Path**: .oh/memory/<date>/<slug>.html
 - **Size**: <bytes>
 - **Observation**: <one sentence — what shape the artifact took, e.g. "filterable severity table with 17 rows + inline SVG dependency map">
 ```
 
-Then run the qualify/improve loop per `.mifune/skills/retro/references/memory-protocol.md`. If you learned something non-obvious about which HTML shape suited this artifact type, that may merit a line in `memory/MEMORY.md`.
+Then run the qualify/improve loop per `.mifune/skills/retro/references/memory-protocol.md`. If you learned something non-obvious about which HTML shape suited this artifact type, that may merit a line in `.oh/memory/MEMORY.md`.
 
 ## Anti-patterns
 
@@ -126,20 +126,20 @@ Then run the qualify/improve loop per `.mifune/skills/retro/references/memory-pr
 - **Decorative JS.** Animations, fade-ins, gradients. The reader is making a decision, not watching a demo.
 - **Rendering source.** Producing `prd.html`, `CLAUDE.html`, `MEMORY.html`. Those files are pipeline input or indexed source — leave them in Markdown.
 - **Multi-file output.** Separate `.css`/`.js` companions. Single file or nothing.
-- **Writing outside `memory/<date>/`.** No exceptions. The location is the convention.
+- **Writing outside `.oh/memory/<date>/`.** No exceptions. The location is the convention.
 - **Overwriting an existing artifact.** Suffix `-2`, `-3` instead — older renders may still be referenced in the conversation.
 - **Skipping the memory log.** Every run logs, op or fail. The qualify/improve loop is not optional.
 
 ## Examples
 
 ```
-/render-html harness-audit-tier --from memory/2026-05-18/audit-raw.md --intent "pick next 3 actions"
-→ memory/2026-05-18/harness-audit-tier.html
+/render-html harness-audit-tier --from .oh/memory/2026-05-18/audit-raw.md --intent "pick next 3 actions"
+→ .oh/memory/2026-05-18/harness-audit-tier.html
 
 /render-html roadmap-council --intent "review council deliberation before publishing pinned issue"
-→ memory/2026-05-18/roadmap-council.html
+→ .oh/memory/2026-05-18/roadmap-council.html
   (source was the strategic-proposal output already in context)
 
-/render-html week-19-digest --from memory/ --intent "what shipped this week"
-→ memory/2026-05-18/week-19-digest.html
+/render-html week-19-digest --from .oh/memory/ --intent "what shipped this week"
+→ .oh/memory/2026-05-18/week-19-digest.html
 ```

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # context-audit runner — Tier-2 ablation harness
 # Usage:
-#   ./runner.sh --ablate <relative-path>   # e.g. context/IDENTITY.md
+#   ./runner.sh --ablate <relative-path>   # e.g. .oh/context/IDENTITY.md
 #   ./runner.sh --baseline                 # record baseline probe outputs only
 #
 # Must be run from the harness root (/home/sandbox/harness).
@@ -91,10 +91,10 @@ if [ "$MODE" = "--baseline" ]; then
   echo "=== Baseline probe run ==="
   run_probes "baseline"
   # Persist to memory for durable comparison
-  mkdir -p "$HARNESS/memory/$TODAY/context-audit-baseline"
-  cp "$RESULTS"/baseline-*.txt "$HARNESS/memory/$TODAY/context-audit-baseline/"
+  mkdir -p "$HARNESS/.oh/memory/$TODAY/context-audit-baseline"
+  cp "$RESULTS"/baseline-*.txt "$HARNESS/.oh/memory/$TODAY/context-audit-baseline/"
   echo ""
-  echo "Baseline saved → memory/$TODAY/context-audit-baseline/"
+  echo "Baseline saved → .oh/memory/$TODAY/context-audit-baseline/"
   exit 0
 fi
 

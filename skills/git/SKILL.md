@@ -30,16 +30,16 @@ Before every commit or PR, inspect the changed paths and choose the remote
 explicitly. Do not assume `origin` is the public target.
 
 **Memory is private. Never commit memory artifacts to the public upstream repo.**
-Anything under `memory/` — especially `memory/MEMORY.md`, dated session logs,
+Anything under `.oh/memory/` — especially `.oh/memory/MEMORY.md`, dated session logs,
 retro notes, and private lessons — belongs only in your private fork
 (`origin`) unless the operator gives an explicit one-off exception. If a public
-PR branch contains `memory/` changes, remove them before pushing/creating the PR,
+PR branch contains `.oh/memory/` changes, remove them before pushing/creating the PR,
 and preserve them separately on an `origin`-only branch or PR.
 
 Use this quick guard before pushing to `upstream`:
 
 ```bash
-git diff --name-only upstream/development...HEAD | grep '^memory/' \
+git diff --name-only upstream/development...HEAD | grep '^.oh/memory/' \
   && { echo "BLOCK: memory changes must go to origin only"; exit 1; }
 ```
 
@@ -241,7 +241,7 @@ If `.claude/skills/ci-status/` exists, invoke `/ci-status` after every `git push
 
 ## Provider Portability
 
-Because not every provider loads `context/rules/*`, put active instructions in
+Because not every provider loads `.oh/context/rules/*`, put active instructions in
 skills and use rules files only as compatibility pointers. If you discover a
 provider-specific workflow dependency hiding in a rules file, promote it to a
 skill and leave a short rule file that points to the skill.

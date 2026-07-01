@@ -1,8 +1,8 @@
 ---
 name: eval
 description: >-
-  Run the context fitness-function probe suite (evals/probes/*.sh) against real
-  state and write the evals/RESULTS.md benchmark. Each probe is a deterministic
+  Run the context fitness-function probe suite (.oh/evals/probes/*.sh) against real
+  state and write the .oh/evals/RESULTS.md benchmark. Each probe is a deterministic
   3-state oracle (PASS/REGRESSION/SKIPPED); a green→red transition is surfaced as
   a REGRESSION naming the lesson it closes. Tier-B behavioral evals are out of scope.
   TRIGGER when: asked to run evals, check the probe suite, "run /eval", verify a
@@ -12,12 +12,12 @@ description: >-
 
 # Eval
 
-The runner for the harness **fitness function**. It discovers `evals/probes/*.sh`,
-runs each against *real state*, and writes the `evals/RESULTS.md` scoreboard. A
+The runner for the harness **fitness function**. It discovers `.oh/evals/probes/*.sh`,
+runs each against *real state*, and writes the `.oh/evals/RESULTS.md` scoreboard. A
 rectification is provably "done" when its probe is green; a recurrence shows up as
 a **REGRESSION** (was-PASS, now-fail) naming the `# source:` lesson. The full
 contract — 3-state exit oracle, header convention, correction-surface triage — is
-in [`evals/README.md`](../../../evals/README.md).
+in [`.oh/evals/README.md`](../../../.oh/evals/README.md).
 
 ## Usage
 
@@ -40,7 +40,7 @@ code by design — this is not a bug.
 
 ## What the runner does
 
-1. **Recover orphaned ablation backups** (M-2): if `evals/.ablation-active`
+1. **Recover orphaned ablation backups** (M-2): if `.oh/evals/.ablation-active`
    exists from a crashed ablation, restore each `<target>.bak` before running.
 2. **Discover + run** every probe matching the filters; extract `# tier:` /
    `# source:` via the exact header grep.
@@ -62,7 +62,7 @@ code by design — this is not a bug.
 target rule/memory file loaded (reusing `scripts/ablate.sh`'s swap/restore/trap
 mechanics — NOT the `claude -p` oracle) and reports `LOAD-BEARING` (regression on
 removal) or `PRUNABLE`. This is the prune-half of the fitness function. See
-US-006 in `tasks/context-fitness-evals/prd.md`.
+US-006 in `.oh/tasks/context-fitness-evals/prd.md`.
 
 ## When NOT to use
 
@@ -73,7 +73,7 @@ US-006 in `tasks/context-fitness-evals/prd.md`.
 
 ## Memory Protocol
 
-After a run, append to `memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+After a run, append to `.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## eval -- HH:MM UTC

@@ -78,7 +78,7 @@ These hold across all three subcommands; the reference docs assume them.
   ```
 - **Orchestrator-only write gate**: `ingest` writes (snapshots + entity pages) and
   `lint`'s `corpus/README.md` regeneration are orchestrator-only. Sub-agents propose
-  drafts to `memory/<today>/wiki-drafts/<slug>.md`; the orchestrator promotes via
+  drafts to `.oh/memory/<today>/wiki-drafts/<slug>.md`; the orchestrator promotes via
   `/wiki ingest --from-draft <slug>`. A sub-agent that writes directly to the corpus
   is out of scope and may be reverted.
 - **Index reflects tracked entries**: `corpus/README.md`'s Index table is generated
@@ -90,7 +90,7 @@ These hold across all three subcommands; the reference docs assume them.
 ## When NOT to use
 
 - A topic that is a **behavioral norm** ("always do X") → a rule/skill, not the wiki.
-- A **session journal** entry ("this run showed Y") → `memory/`, not the wiki.
+- A **session journal** entry ("this run showed Y") → `.oh/memory/`, not the wiki.
 - **Human-facing prose** → `docs/`, not the wiki (the wiki is LLM-readable synthesis).
 - Full-text body search → direct `grep`; `query` is intentionally frontmatter-only.
 
@@ -99,4 +99,4 @@ These hold across all three subcommands; the reference docs assume them.
 - `.mifune/skills/wiki/references/schema.md` — canonical schema and authoring rules
 - `.mifune/skills/wiki/references/ingest.md` · `query.md` · `lint.md` — full procedures
 - `.mifune/skills/retro/references/memory-protocol.md` — the Memory Improvement Protocol
-- `evals/probes/wiki-readme-index.sh` — drift guard for the tracked corpus index
+- `.oh/evals/probes/wiki-readme-index.sh` — drift guard for the tracked corpus index

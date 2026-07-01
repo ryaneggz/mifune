@@ -7,7 +7,7 @@
 > `$ARGUMENTS`. Authority: `AGENTS.md § The Workflow`.
 
 The **execute** node of the `spec-*` family (`AGENTS.md § The Workflow`). Pointed at an
-**APPROVED** `tasks/<slug>/` folder (cleared by `/spec critique`), it drives the build to
+**APPROVED** `.oh/tasks/<slug>/` folder (cleared by `/spec critique`), it drives the build to
 a ready-for-review PR and stops at the human merge gate. It contains the second adversarial
 loop — `build ⇄ audit` — mirroring the `spec-plan ⇄ spec-critique` loop that vetted the plan.
 
@@ -30,13 +30,13 @@ runnable on its own folder or fanned out at scale via `/delegate`.
 
 | Arg | Meaning |
 |-----|---------|
-| `<slug>` | The task slug — reads the four-file contract in `tasks/<slug>/` and `prd.json`'s `branchName`. Required. |
+| `<slug>` | The task slug — reads the four-file contract in `.oh/tasks/<slug>/` and `prd.json`'s `branchName`. Required. |
 | `--pr <N>` | Resume against an existing PR rather than creating one. |
 | `--repo <owner/name>` | GitHub repo (default `mifunedev/openharness`; read from the folder if `/spec plan` recorded it). |
 | `--remote <name>` | Git remote (resolved from `--repo` if absent). |
 | `--base <branch>` | PR base + branch start point (default `development`). |
 
-Precondition: `/spec critique <slug>` returned `SPEC-APPROVED`. If `tasks/<slug>/` is not
+Precondition: `/spec critique <slug>` returned `SPEC-APPROVED`. If `.oh/tasks/<slug>/` is not
 APPROVED (no `critique.md`, or its verdict is `DENIED`), refuse and route back to
 `/spec critique` — do not build an ungated spec (`AGENTS.md § The Workflow`
 critic-before-commitment invariant).
@@ -56,7 +56,7 @@ specifies — an expert `/worktrees` Advisor in a tmux session (`agent-ship-<slu
 `/goal` that, by default (`--executor=ralph`), **monitors `scripts/ralph.sh <slug>` directly**
 in an isolated worktree to `STATUS: COMPLETE` (`/delegate` is an optional within-iteration
 fan-out tool, never a replacement for the loop; `--executor=delegate-advisor` selects the
-legacy `/delegate --plan tasks/<slug>/prd.json` worker fan-out). Use that skill's stage text
+legacy `/delegate --plan .oh/tasks/<slug>/prd.json` worker fan-out). Use that skill's stage text
 as the authority for the mechanics; do not duplicate them here.
 
 ### 2. `build ⇄ audit` — the second adversarial loop
@@ -91,7 +91,7 @@ propose-then-confirm gate. Always logs.
 The self-improvement tail (`AGENTS.md § The Workflow`):
 
 - **compound** — promote durable knowledge so it is reused, not re-derived (`/wiki ingest`,
-  `memory/MEMORY.md`, mint a probe from any guardrail lesson).
+  `.oh/memory/MEMORY.md`, mint a probe from any guardrail lesson).
 - **compress** — keep the always-loaded context lean and clear (`/context-audit`).
 - **benchmark** — confirm the change earned its complexity (`/benchmark`): the `/eval`
   regression floor stays green AND the capability-benchmark ceiling held or moved.
@@ -125,7 +125,7 @@ Workflow`: *human merge — final gate, no auto-merge*). Never `gh pr merge`.
 ## Memory Protocol
 
 The composed skills each log their own entries. `execute` adds one roll-up to
-`memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+`.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## spec-execute -- HH:MM UTC

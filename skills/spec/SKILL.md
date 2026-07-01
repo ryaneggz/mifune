@@ -3,14 +3,14 @@ name: spec
 description: >-
   Dispatcher for the canonical decomposed workflow (AGENTS.md § The Workflow) —
   routes the first token of $ARGUMENTS to one of four subcommands: plan, critique,
-  execute, or retro. Each is pointed at a tasks/<slug>/ folder (the universal
+  execute, or retro. Each is pointed at a .oh/tasks/<slug>/ folder (the universal
   interface) and is the same independently-runnable, fan-out-able node /ship-spec
   decomposes into. Full per-subcommand procedures live in
   references/{plan,critique,execute,retro}.md. Authority: AGENTS.md § The Workflow.
   TRIGGER when: a topic/plan/issue needs to become a buildable task folder, "plan
-  <topic>", "scaffold the task for <issue>" -> plan; a planned tasks/<slug>/ folder
+  <topic>", "scaffold the task for <issue>" -> plan; a planned .oh/tasks/<slug>/ folder
   needs adversarial review + a go/no-go decision, "critique <slug>", "vet the plan
-  for <slug>" -> critique; an APPROVED tasks/<slug>/ folder needs building to a
+  for <slug>" -> critique; an APPROVED .oh/tasks/<slug>/ folder needs building to a
   promotable PR, "execute <slug>", "build <slug>" -> execute; a build PASSed audit
   and its lessons should be captured, "retro the <slug> build", "capture lessons
   for <slug>" -> retro.
@@ -35,10 +35,10 @@ split so each node can be run independently or fanned out at scale via `/delegat
 
 | Subcommand | Arg shape | Purpose | Procedure |
 |---|---|---|---|
-| `plan` | `<topic> [--plan <path>] [--issue <N>] [--slug <slug>] [--prefix <type>] [--repo <o/n>] [--base <branch>]` | Turn a topic/plan/issue into a fully-scaffolded `tasks/<slug>/` four-file folder | `references/plan.md` |
+| `plan` | `<topic> [--plan <path>] [--issue <N>] [--slug <slug>] [--prefix <type>] [--repo <o/n>] [--base <branch>]` | Turn a topic/plan/issue into a fully-scaffolded `.oh/tasks/<slug>/` four-file folder | `references/plan.md` |
 | `critique` | `<slug> [--auto]` | Run the two adversarial critics (`/critique`) + the commitment gate (`/approve`); the `plan ⇄ critique` loop | `references/critique.md` |
 | `execute` | `<slug> [--pr <N>] [--repo <o/n>] [--remote <name>] [--base <branch>]` | `build ⇄ audit → spec-retro → improve → groom` to a ready PR, stopping at the human merge gate | `references/execute.md` |
-| `retro` | `<slug> [--dry-run]` | Execution-side `/retro` scoped to a built `tasks/<slug>/` | `references/retro.md` |
+| `retro` | `<slug> [--dry-run]` | Execution-side `/retro` scoped to a built `.oh/tasks/<slug>/` | `references/retro.md` |
 
 ## Dispatch
 
@@ -67,7 +67,7 @@ esac
   (`select → spec-plan ⇄ spec-critique → spec-execute → merge → reset|clean`),
   the single designated runner (`/autopilot`), and the `/ship-spec` caveat all
   live there. Defer to it; do not redefine the workflow here.
-- **The `tasks/<slug>/` folder is the universal interface** — `plan` produces it;
+- **The `.oh/tasks/<slug>/` folder is the universal interface** — `plan` produces it;
   `critique`, `execute`, and `retro` are each pointed at it. The `<slug>` is the
   universal key (task directory, branch second segment, tmux session name).
 - **Compose, don't fork** — each node reuses existing loop-node skills rather than
@@ -86,7 +86,7 @@ esac
   `STATUS: SPEC-RETRO-DONE`. Never infer success from silence — a missing
   artifact, crashed build, or undecided gate emits no `STATUS:` line.
 - **Memory Improvement Protocol** — every invocation of every subcommand appends
-  a log entry to `memory/<UTC-date>/log.md` under `## spec-<sub> -- HH:MM UTC`,
+  a log entry to `.oh/memory/<UTC-date>/log.md` under `## spec-<sub> -- HH:MM UTC`,
   then runs the qualify/improve pass per `.mifune/skills/retro/references/memory-protocol.md`. No exceptions.
 
 ## When NOT to use

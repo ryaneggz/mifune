@@ -212,7 +212,7 @@ Output a structured summary:
 
 Run at the end of **every** execution -- op, dry-run, or error.
 
-**a) Log** -- append to `memory/<today>/log.md` where today = `date -u +%Y-%m-%d`:
+**a) Log** -- append to `.oh/memory/<today>/log.md` where today = `date -u +%Y-%m-%d`:
 
 ```markdown
 ## Delegate -- HH:MM UTC
@@ -246,6 +246,6 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 | Agent: Council | `.claude/agents/council.md` |
 | Identity | `IDENTITY.md` |
 | Memory | `MEMORY.md` |
-| Daily Logs | `memory/YYYY-MM-DD/log.md` |
+| Daily Logs | `.oh/memory/YYYY-MM-DD/log.md` |
 
 The `implementer`/`pm`/`critic` agent types above are read-only and will silently make zero file changes. For any worker that must `Write`/`Edit` files, set `subagent_type: general-purpose` (or `claude`) — both are built-in agent types with no agent-definition file, so there is no `.claude/agents/` path to reference.

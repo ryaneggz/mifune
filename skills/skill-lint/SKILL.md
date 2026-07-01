@@ -66,7 +66,7 @@ AGE_DAYS=$(( (NOW - MTIME) / 86400 ))
 ```bash
 # Count daily memory logs that mention this skill name (case-insensitive)
 SKILL_NAME="<skill-name>"
-MENTION_COUNT=$(grep -rli "$SKILL_NAME" /home/sandbox/harness/memory/ 2>/dev/null | wc -l)
+MENTION_COUNT=$(grep -rli "$SKILL_NAME" /home/sandbox/harness/.oh/memory/ 2>/dev/null | wc -l)
 ```
 
 | Mentions | Score |
@@ -194,7 +194,7 @@ Sort the Scores table by Total ascending (worst first). Omit CURRENT skills from
 
 ### 7. Memory Protocol
 
-Append to `memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
+Append to `.oh/memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
 
 ```markdown
 ## [Skill Lint] — HH:MM UTC
@@ -213,7 +213,7 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 - When checking integrity references, skip references to standard Unix paths (`/bin`, `/usr`, `/home/sandbox/harness` itself as a directory) — only flag references to specific files or skills that do not exist.
 - A skill that is the target of `argument-hint: "all | root | workspace | <skill-name>"` style hints should not be penalized for referencing those placeholder tokens.
 - For the single-skill target mode (`$ARGUMENTS` = a skill name), run all 5 dimensions and emit the same table for just that skill, plus its recommendation.
-- Heartbeat/cron coverage is a bonus signal, not a scored dimension — note it in the Recommendation line if a skill has 0 usage and no cron reference in `crons/`.
+- Heartbeat/cron coverage is a bonus signal, not a scored dimension — note it in the Recommendation line if a skill has 0 usage and no cron reference in `.oh/crons/`.
 
 ## Reference
 

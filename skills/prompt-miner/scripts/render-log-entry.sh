@@ -3,9 +3,9 @@
 #
 # Mirrors the autopilot/caps logging shape: it resolves the shared harness root
 # (git rev-parse --show-toplevel) and appends a single Memory-Improvement-Protocol
-# record to memory/<UTC-date>/log.md through the repo-root .oh/scripts/locked-append.sh
+# record to .oh/memory/<UTC-date>/log.md through the repo-root .oh/scripts/locked-append.sh
 # helper so the whole multi-line record is serialized under flock. Diagnostics go
-# to stderr; the helper never edits memory/MEMORY.md or context/IDENTITY.md.
+# to stderr; the helper never edits .oh/memory/MEMORY.md or .oh/context/IDENTITY.md.
 #
 # Flags (all optional except --result):
 #   --result <MINING-COMPLETE|DRY-RUN|NO-SESSIONS|NO-CORPUS>  the run's RESULT tag
@@ -45,7 +45,7 @@ DAY="$(date -u +%Y-%m-%d)"
 # current toplevel; the cron path may export AUTOPILOT_LOG_ROOT to redirect the
 # write to the shared root checkout (matching the autopilot convention).
 ROOT="${AUTOPILOT_LOG_ROOT:-$(git rev-parse --show-toplevel)}"
-LOG_DIR="$ROOT/memory/$DAY"
+LOG_DIR="$ROOT/.oh/memory/$DAY"
 LOG_FILE="$LOG_DIR/log.md"
 APPEND="$ROOT/.oh/scripts/locked-append.sh"
 mkdir -p "$LOG_DIR"

@@ -17,14 +17,14 @@ Use this when changing how Open Harness skills are shared across agent runtimes.
 When moving or renaming the canonical skill path, update all path-sensitive callers, not just the symlink:
 
 - CI path filters and runner invocations, e.g. `.github/workflows/*` should watch/use `.mifune/skills/**` and `bash .mifune/skills/eval/run.sh`.
-- Cron prompts/runbooks that invoke skill scripts, e.g. `crons/heartbeat.md`.
+- Cron prompts/runbooks that invoke skill scripts, e.g. `.oh/crons/heartbeat.md`.
 - Eval probes that assert exact paths or inspect skill fixtures, e.g. `eval-ci-gate` and prompt-miner fixture probes.
 - Docs and runtime README files: `AGENTS.md`, `.hermes/README.md`, `docs/installation.md`, `docs/harnesses/hermes.md`, changelog.
 - The governing skill docs themselves: `harness-context` and its source-of-truth references.
 
 ## Script pitfall
 
-Skill support scripts may be executed through `.mifune/skills/...`, `.claude/skills/...`, `.codex/skills/...`, `.pi/skills/...`, or Hermes' linked `.hermes/skills/openharness/...` path. Avoid fixed-depth root derivation such as `SCRIPT_DIR/../../..`. Instead, walk upward until an invariant repo marker exists, e.g. `evals/probes`, `AGENTS.md`, or `.git`.
+Skill support scripts may be executed through `.mifune/skills/...`, `.claude/skills/...`, `.codex/skills/...`, `.pi/skills/...`, or Hermes' linked `.hermes/skills/openharness/...` path. Avoid fixed-depth root derivation such as `SCRIPT_DIR/../../..`. Instead, walk upward until an invariant repo marker exists, e.g. `.oh/evals/probes`, `AGENTS.md`, or `.git`.
 
 ## Verification checklist
 

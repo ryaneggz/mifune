@@ -203,7 +203,7 @@ Parse the council's FINAL roadmap table and write it to `docs/roadmap.md` as a s
 
 ### 10. Memory Improvement Protocol
 
-**a) Log** — append to `memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
+**a) Log** — append to `.oh/memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
 
 ```markdown
 ## Strategic Proposal — HH:MM UTC
@@ -236,4 +236,4 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 | Roadmap data | `docs/roadmap.md` |
 | Identity | `IDENTITY.md` |
 | Memory | `MEMORY.md` |
-| Daily Logs | `memory/YYYY-MM-DD/log.md` |
+| Daily Logs | `.oh/memory/YYYY-MM-DD/log.md` |

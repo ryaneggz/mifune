@@ -19,15 +19,15 @@ conventions, git workflow, or where files live.
 1. Read `CLAUDE.md` for the orchestrator contract — what the root-level
    agent does and does not do.
 2. For layout questions, read the per-directory `README.md` files (e.g.
-   `.oh/README.md`, `crons/README.md`, `tasks/README.md`,
+   `.oh/README.md`, `.oh/crons/README.md`, `.oh/tasks/README.md`,
    `.oh/scripts/README.md`, `.worktrees/README.md`) and the `Project
    Structure` section of `CLAUDE.md`. There is no single comprehensive
    tree — use the filesystem and the directory READMEs.
-3. For behavioral norms (formerly the `context/rules/` tier, collapsed into
+3. For behavioral norms (formerly the `.oh/context/rules/` tier, collapsed into
    on-demand skills in B-state M4), the canonical homes are now:
    - `/git` (`.mifune/skills/git/SKILL.md`) — issue / branch / commit / PR conventions
    - `/t3` (`.mifune/skills/t3/references/sandbox-processes.md`) — tmux sessions for long-running processes
-   - `context/directory-readme.md` — when a directory needs a README
+   - `.oh/context/directory-readme.md` — when a directory needs a README
    - `/advisor` (`.mifune/skills/advisor/SKILL.md`) — pattern for delegating to sub-agents
 4. For skill-listing or skill-source-of-truth questions, load `references/skill-source-of-truth.md` and separate the tracked Open Harness shared skill library (`.mifune/skills/*/SKILL.md`, exposed through `.claude/skills`, `.codex/skills`, `.pi/skills`, and Hermes' runtime `.hermes/skills/openharness` symlink) from the active Hermes runtime catalog (`.hermes/skills/` plus bundled/profile skills). Do not present `hermes skills list` as the repo source of truth without this distinction.
 5. For shared-skill path migrations or cross-agent skill wiring, load `references/shared-skills-symlink-migration.md`; update symlinks, runtime boot setup, docs, CI path filters, cron invocations, exact-path eval probes, and fixed-depth support scripts together before declaring the migration done.
@@ -41,4 +41,4 @@ conventions, git workflow, or where files live.
 - Lifecycle questions (setup / validate / teardown): cite the relevant
   section of `CLAUDE.md`.
 - Convention questions: cite the owning skill (`.mifune/skills/<name>/SKILL.md`)
-  or the relevant `context/` doc.
+  or the relevant `.oh/context/` doc.

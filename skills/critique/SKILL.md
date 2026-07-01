@@ -3,7 +3,7 @@ name: critique
 description: >-
   The critique node of the canonical workflow — run two adversarial critics in
   parallel (implementer lens + user lens) against a freshly-planned spec, write
-  their findings to tasks/<slug>/critique.md, and hand off to the approve gate.
+  their findings to .oh/tasks/<slug>/critique.md, and hand off to the approve gate.
   This is the EVIDENCE half of the critique→approve pair; it produces findings,
   it does not decide (the /approve gate decides). Runs on local artifacts only,
   before any GitHub-side state.
@@ -20,7 +20,7 @@ the short adversarial feedback loop on a planned spec *before* anything is commi
 and writes the `critique.md` artifact the `approve` gate then decides on.
 
 **Core principle: surface risk while the spec is still the cheapest thing to revise.**
-Two critics with **different framings** review `tasks/<slug>/prd.md` in parallel —
+Two critics with **different framings** review `.oh/tasks/<slug>/prd.md` in parallel —
 symmetric critics waste context. Every finding is SEVERITY-tagged so the downstream
 `/approve` gate can act on it mechanically. This node produces evidence; it does not
 gate (that is `/approve`). Like the gate, it touches only local artifacts — no
@@ -33,9 +33,9 @@ reusable node.
 
 | Arg | Meaning |
 |-----|---------|
-| `<slug>` | The task slug — the critics read `tasks/<slug>/prd.md`; output is written to `tasks/<slug>/critique.md`. Required. |
+| `<slug>` | The task slug — the critics read `.oh/tasks/<slug>/prd.md`; output is written to `.oh/tasks/<slug>/critique.md`. Required. |
 
-If `tasks/<slug>/prd.md` is absent there is nothing to critique — print an error
+If `.oh/tasks/<slug>/prd.md` is absent there is nothing to critique — print an error
 pointing at `/spec plan` and emit **no** `STATUS:` token (honest exits: a missing
 spec is a failure, not a clean critique).
 
@@ -52,11 +52,11 @@ have caught the v0.7 convergence regression, PR #212 / US-012).
 ### Critic A — Implementer lens
 
 > You are an adversarial implementer reviewing a PRD before any code is written. Read
-> `tasks/<slug>/prd.md`. Read `.claude/protected-paths.txt` and treat its entries as
+> `.oh/tasks/<slug>/prd.md`. Read `.claude/protected-paths.txt` and treat its entries as
 > MUST-NOT-DELETE without an override note. Surface technical risks BEFORE
 > implementation. Focus on: (1) vague/unverifiable acceptance criteria; (2) missing
 > dependencies each story silently assumes; (3) pattern conflicts with this repo (read
-> `AGENTS.md` + the relevant `.mifune/skills/*/SKILL.md` and sibling `tasks/*/prd.json`); (4) scope creep — "single
+> `AGENTS.md` + the relevant `.mifune/skills/*/SKILL.md` and sibling `.oh/tasks/*/prd.json`); (4) scope creep — "single
 > iteration" stories that are really 2+; (5) hidden destructive operations not
 > explicitly gated; (6) protected-path violations → `SEVERITY: H` + `[PROTECTED-PATH]`.
 > Return:
@@ -68,11 +68,11 @@ have caught the v0.7 convergence regression, PR #212 / US-012).
 ### Critic B — User lens
 
 > You are an adversarial user reviewing a PRD before implementation. Read
-> `tasks/<slug>/prd.md` and `context/USER.md` (the single-developer / single-project
+> `.oh/tasks/<slug>/prd.md` and `.oh/context/USER.md` (the single-developer / single-project
 > framing). Read `.claude/protected-paths.txt` and treat its entries as MUST-NOT-DELETE
 > without an override note. Surface scope and framing risks BEFORE the team commits.
 > Focus on: (1) scope ambiguity — what's missing from Non-Goals; (2) audience
-> misalignment vs. `context/USER.md`; (3) hidden expectations the PRD doesn't address;
+> misalignment vs. `.oh/context/USER.md`; (3) hidden expectations the PRD doesn't address;
 > (4) premature optimization — solving a problem the user doesn't have yet; (5) missing
 > rollback/escape hatch for destructive stories; (6) protected-path violations →
 > `SEVERITY: H` + `[PROTECTED-PATH]`. Return:
@@ -106,7 +106,7 @@ Invariants (the seam is schema-preserving):
 
 ---
 
-## Write `tasks/<slug>/critique.md`
+## Write `.oh/tasks/<slug>/critique.md`
 
 Persist both critics' raw output plus a synthesis, in the exact shape `/approve` (and
 `/ship-spec` Stage 4) parses:
@@ -148,7 +148,7 @@ none → `PROCEED`. This node only *records* that judgment — the binding decis
 
 ## Memory Protocol
 
-After a run, append to `memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+After a run, append to `.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## critique -- HH:MM UTC
