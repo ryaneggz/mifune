@@ -148,8 +148,8 @@ Then ask (use `AskUserQuestion`). Run the removal only on explicit approval. Wit
 Always, per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```bash
-TODAY=$(date -u +%Y-%m-%d); TIME=$(date -u +%H:%M); mkdir -p "memory/$TODAY"
-.oh/scripts/locked-append.sh "memory/$TODAY/log.md" <<EOF
+TODAY=$(date -u +%Y-%m-%d); TIME=$(date -u +%H:%M); mkdir -p ".oh/memory/$TODAY"
+.oh/scripts/locked-append.sh ".oh/memory/$TODAY/log.md" <<EOF
 
 ## Health-Check -- $TIME UTC
 - **Result**: OP | DRY-RUN

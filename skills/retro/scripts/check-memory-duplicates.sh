@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Reads proposed MEMORY/IDENTITY lines from stdin and reports lines whose lesson
-# text already appears in memory/MEMORY.md or context/IDENTITY.md. Exact enough to
+# text already appears in .oh/memory/MEMORY.md or context/IDENTITY.md. Exact enough to
 # catch double-writes without making subjective semantic judgments.
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
-MEMORY_FILE="$ROOT/memory/MEMORY.md"
+MEMORY_FILE="$ROOT/.oh/memory/MEMORY.md"
 IDENTITY_FILE="$ROOT/context/IDENTITY.md"
 
 status=0

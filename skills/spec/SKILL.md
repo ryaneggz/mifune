@@ -86,7 +86,7 @@ esac
   `STATUS: SPEC-RETRO-DONE`. Never infer success from silence — a missing
   artifact, crashed build, or undecided gate emits no `STATUS:` line.
 - **Memory Improvement Protocol** — every invocation of every subcommand appends
-  a log entry to `memory/<UTC-date>/log.md` under `## spec-<sub> -- HH:MM UTC`,
+  a log entry to `.oh/memory/<UTC-date>/log.md` under `## spec-<sub> -- HH:MM UTC`,
   then runs the qualify/improve pass per `.mifune/skills/retro/references/memory-protocol.md`. No exceptions.
 
 ## When NOT to use

@@ -10,11 +10,11 @@ Memory operates on two tiers:
 
 | Tier | Path | What it holds |
 |------|------|---------------|
-| Daily log | `memory/YYYY-MM-DD/log.md` | Time-stamped entries from each skill or agent run that day |
-| Long-term lessons | `memory/MEMORY.md` | Distilled lessons that survived qualify/improve review; one bullet per lesson |
+| Daily log | `.oh/memory/YYYY-MM-DD/log.md` | Time-stamped entries from each skill or agent run that day |
+| Long-term lessons | `.oh/memory/MEMORY.md` | Distilled lessons that survived qualify/improve review; one bullet per lesson |
 
 Topic notes (e.g. campaign planning, integration state) go directly under
-`memory/<topic>.md` (example: `memory/x-campaign.md`). They are neither daily
+`.oh/memory/<topic>.md` (example: `.oh/memory/x-campaign.md`). They are neither daily
 nor long-term: they are reference notes an agent would otherwise re-derive from
 scratch.
 
@@ -24,46 +24,46 @@ minimum record needed to avoid repeating the same mistakes across sessions.
 ## Layout
 
 ```
-memory/
+.oh/memory/
   MEMORY.md              # long-term lessons (tracked)
   <topic>.md             # per-topic reference notes (tracked or gitignored per need)
   YYYY-MM-DD/
     log.md               # daily append log (gitignored - local-only; not committed)
 ```
 
-The `memory/YYYY-MM-DD/` directory is gitignored via `.gitignore`'s
-`memory/[0-9]*/` rule, so daily logs are a **local-only working journal** —
+The `.oh/memory/YYYY-MM-DD/` directory is gitignored via `.gitignore`'s
+`.oh/memory/[0-9]*/` rule, so daily logs are a **local-only working journal** —
 they do not survive a fresh clone. Only `MEMORY.md`, `README.md`, and explicitly reviewed topic notes should
 persist in git. Public release branches should not carry daily logs or
 maintainer-private notes.
 
 Date format: always `date -u +%Y-%m-%d` (UTC). Never local time.
 
-The `memory/YYYY-MM-DD/` subdirectory is the canonical path. The heartbeat cron
-writes there; using a flat `memory/YYYY-MM-DD.md` file is incorrect — the
+The `.oh/memory/YYYY-MM-DD/` subdirectory is the canonical path. The heartbeat cron
+writes there; using a flat `.oh/memory/YYYY-MM-DD.md` file is incorrect — the
 subdirectory won in practice. Create the directory before writing:
 
 ```bash
 TODAY=$(date -u +%Y-%m-%d)
-mkdir -p "memory/$TODAY"
-# then append to memory/$TODAY/log.md
+mkdir -p ".oh/memory/$TODAY"
+# then append to .oh/memory/$TODAY/log.md
 ```
 
 For directory anchor and gitignore conventions see `context/directory-readme.md`.
 
 ## Read
 
-**Orchestrator (full session):** `memory/MEMORY.md` is listed in `CLAUDE.md`
+**Orchestrator (full session):** `.oh/memory/MEMORY.md` is listed in `CLAUDE.md`
 under "Session start" and is auto-loaded at the top of every session alongside
 `context/SOUL.md`, `context/IDENTITY.md`, `context/TOOLS.md`, and
 `context/USER.md`. No explicit read step needed.
 
 **Sub-agents (on demand):** Sub-agents do not auto-load memory. When a briefing
 is relevant, the advisor should include the pertinent excerpt or instruct the
-sub-agent to read `memory/MEMORY.md` and `memory/<today>/log.md` as its first
+sub-agent to read `.oh/memory/MEMORY.md` and `.oh/memory/<today>/log.md` as its first
 step.
 
-**Heartbeat cron:** The hourly heartbeat reads `memory/<today>/log.md` at the
+**Heartbeat cron:** The hourly heartbeat reads `.oh/memory/<today>/log.md` at the
 start of each pulse (creating the directory if it does not exist) and appends a
 result entry. See `.oh/crons/heartbeat.md` for the full heartbeat spec.
 
@@ -71,7 +71,7 @@ result entry. See `.oh/crons/heartbeat.md` for the full heartbeat spec.
 
 Run at the end of **every** skill or agent execution — op, dry-run, or error.
 
-**a) Log** — append to `memory/YYYY-MM-DD/log.md`:
+**a) Log** — append to `.oh/memory/YYYY-MM-DD/log.md`:
 
 ```markdown
 ## <Skill-Name> -- HH:MM UTC
@@ -92,7 +92,7 @@ produced the entry.
 - Did the run reveal a coupling, constraint, or edge case not captured in any rule?
 - Would the next agent start better if this were written down?
 
-**c) Improve** — if actionable, append to `memory/MEMORY.md` under
+**c) Improve** — if actionable, append to `.oh/memory/MEMORY.md` under
 `## Lessons Learned`. Keep each lesson to one bullet. Lessons that already
 appear in `context/IDENTITY.md` or an existing rule must not be duplicated —
 link or skip.
@@ -103,7 +103,7 @@ is an incomplete execution.
 ## Concurrency
 
 Memory files are plain markdown. Shared runtime logs — especially
-`memory/<today>/log.md` and `.oh/crons/.cron.log` written from cron, isolated
+`.oh/memory/<today>/log.md` and `.oh/crons/.cron.log` written from cron, isolated
 worktrees, or kept tmux sessions — should append through
 `scripts/locked-append.sh` (or an equivalent `flock`-guarded helper) so a whole
 multi-line record is serialized. Local scratch writes that only one process can
@@ -141,16 +141,16 @@ is not: treat existing entries as immutable once written.
 
 ## Boundary with `context/IDENTITY.md`
 
-`context/IDENTITY.md` and `memory/MEMORY.md` are related but distinct:
+`context/IDENTITY.md` and `.oh/memory/MEMORY.md` are related but distinct:
 
-| | `context/IDENTITY.md` | `memory/MEMORY.md` |
+| | `context/IDENTITY.md` | `.oh/memory/MEMORY.md` |
 |-|-----------------------|--------------------|
 | **Holds** | Operating principles — how the orchestrator behaves; distilled rules-of-thumb | Experiential observations — what specific runs revealed |
 | **Tone** | Prescriptive ("always do X", "never do Y") | Descriptive ("run on YYYY-MM-DD showed that…") |
 | **Written by** | Orchestrator sessions, after deliberate review | Any session or skill, immediately after a run |
 | **Changed how** | Deliberate revision when evidence overturns a principle | Append-only; entries are never edited after writing |
 
-A lesson graduates from `memory/MEMORY.md` to `context/IDENTITY.md` only when
+A lesson graduates from `.oh/memory/MEMORY.md` to `context/IDENTITY.md` only when
 it has generalized into a principle — that is, it applies across contexts, not
 just the run that produced it. Do not double-write: once a lesson is in
 `IDENTITY.md`, remove or link it from `MEMORY.md`.
@@ -165,5 +165,5 @@ goes in `IDENTITY.md`.
 |----------|------|
 | Directory README convention | `context/directory-readme.md` |
 | Heartbeat cron (daily log writer) | `.oh/crons/heartbeat.md` |
-| Long-term lessons (instance) | `memory/MEMORY.md` |
+| Long-term lessons (instance) | `.oh/memory/MEMORY.md` |
 | Identity / operating principles | `context/IDENTITY.md` |

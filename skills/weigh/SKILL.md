@@ -112,7 +112,7 @@ For each sampled trajectory, attach the deterministic signals the scorer weights
 
 Write the assembled cohort (array of `TRAJECTORY_SCHEMA` records, or a
 `{ "trajectories": [...] }` wrapper) to a gitignored working file, e.g.
-`memory/<UTC-date>/weigh-<slug>-<HHMMSS>.cohort.json`.
+`.oh/memory/<UTC-date>/weigh-<slug>-<HHMMSS>.cohort.json`.
 
 ### Step 4 — Weight + select (the harness-owned step)
 
@@ -122,7 +122,7 @@ scorer itself stays pure:
 
 ```bash
 node "${CLAUDE_SKILL_DIR}/scripts/score-trajectories.mjs" \
-  --cohort "memory/$(date -u +%F)/weigh-<slug>-<HHMMSS>.cohort.json" \
+  --cohort ".oh/memory/$(date -u +%F)/weigh-<slug>-<HHMMSS>.cohort.json" \
   --method "<best-of-n|vote|softmax|synthesis>" \
   --now "$(date -u +%s)" \
   [--weights '<json>'] [--soft]
@@ -147,8 +147,8 @@ methods `selected` is already the single chosen id — no aggregation step.
 
 ### Step 6 — Persist + log
 
-1. **Persist** the run artifacts to the **gitignored** `memory/<UTC-date>/`
-   directory (matched by `.gitignore` `memory/[0-9]*/`) — never stage them:
+1. **Persist** the run artifacts to the **gitignored** `.oh/memory/<UTC-date>/`
+   directory (matched by `.gitignore` `.oh/memory/[0-9]*/`) — never stage them:
    - `weigh-<slug>-<HHMMSS>.json` — the full scorer report (config + scored rows +
      selection), the audit trail.
    - `weigh-<slug>-<HHMMSS>.md` — a short human summary: the task, N, method,
@@ -156,7 +156,7 @@ methods `selected` is already the single chosen id — no aggregation step.
      any `floorViolations`.
 
 2. **Log** per the Memory Improvement Protocol — append to
-   `memory/<UTC-date>/log.md` (today = `date -u +%Y-%m-%d`):
+   `.oh/memory/<UTC-date>/log.md` (today = `date -u +%Y-%m-%d`):
 
    ```markdown
    ## weigh -- HH:MM UTC
@@ -184,7 +184,7 @@ Announce the `RESULT:` tag once Step 6 completes.
   the scorer.
 - **Exceeding the cap.** `N > 8` is rejected — cost grows linearly with N (plus
   `/eval` + `/audit` per trajectory). Preview with `--dry-run` first.
-- **Committing the artifacts.** `memory/<UTC-date>/` is gitignored; never stage a
+- **Committing the artifacts.** `.oh/memory/<UTC-date>/` is gitignored; never stage a
   cohort, report, or summary.
 - **Editing the scorer to change weights inline.** `DEFAULT_WEIGHTS` is
   `Object.freeze`d and probe-pinned; pass `--weights` for a one-off, and route any

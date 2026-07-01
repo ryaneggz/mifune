@@ -20,7 +20,7 @@ Score every file in the default-loaded context set on 4 deterministic dimensions
 |-------|-------|-----------|
 | Bootloader | `CLAUDE.md` | always |
 | Context | `context/SOUL.md`, `context/IDENTITY.md`, `context/TOOLS.md`, `context/USER.md` | session start |
-| Memory | `memory/MEMORY.md` (+ today's log) | session start |
+| Memory | `.oh/memory/MEMORY.md` (+ today's log) | session start |
 | Skill metadata | frontmatter of all `**/SKILL.md` | always injected |
 
 ## Instructions
@@ -32,7 +32,7 @@ Arguments received: `$ARGUMENTS`
 | Argument | Mode |
 |----------|------|
 | empty or `all` | Tier-1 scorecard only |
-| `--baseline` | Tier-1 scorecard + record durable baseline snapshot to `memory/YYYY-MM-DD/context-audit-baseline/` |
+| `--baseline` | Tier-1 scorecard + record durable baseline snapshot to `.oh/memory/YYYY-MM-DD/context-audit-baseline/` |
 | `--ablate <file>` | Tier-1 scorecard + Tier-2 ablation against `<file>` (path relative to harness root) |
 
 ### 2. Inventory the default-loaded set
@@ -48,7 +48,7 @@ for f in \
   "$HARNESS/context/IDENTITY.md" \
   "$HARNESS/context/TOOLS.md" \
   "$HARNESS/context/USER.md" \
-  "$HARNESS/memory/MEMORY.md"; do
+  "$HARNESS/.oh/memory/MEMORY.md"; do
   [ -f "$f" ] || continue
   chars=$(wc -c < "$f")
   words=$(wc -w < "$f")
@@ -237,11 +237,11 @@ for probe in "$PROBE_DIR"/*.md; do
 done
 ```
 
-If `--baseline` mode: copy results to `memory/$TODAY/context-audit-baseline/` for durable storage.
+If `--baseline` mode: copy results to `.oh/memory/$TODAY/context-audit-baseline/` for durable storage.
 
 ```bash
-mkdir -p "$HARNESS/memory/$TODAY/context-audit-baseline"
-cp "$RESULTS"/baseline-*.txt "$HARNESS/memory/$TODAY/context-audit-baseline/"
+mkdir -p "$HARNESS/.oh/memory/$TODAY/context-audit-baseline"
+cp "$RESULTS"/baseline-*.txt "$HARNESS/.oh/memory/$TODAY/context-audit-baseline/"
 ```
 
 #### 6b. Ablation run
@@ -320,8 +320,8 @@ Degradation threshold: **SIGNAL DETECTED** if any probe's ablation hits fall mor
 ### 7. Memory Protocol
 
 ```bash
-mkdir -p "$HARNESS/memory/$TODAY"
-.oh/scripts/locked-append.sh "$HARNESS/memory/$TODAY/log.md" <<EOF
+mkdir -p "$HARNESS/.oh/memory/$TODAY"
+.oh/scripts/locked-append.sh "$HARNESS/.oh/memory/$TODAY/log.md" <<EOF
 
 ## [Context Audit] — $(date -u +%H:%M) UTC
 - **Result**: OP
@@ -341,7 +341,7 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 - The skill-metadata aggregate row gets a budget line but no verdict (it's aggregate; verdicts apply per-file only).
 - Tier-2 probe results are probabilistic, not deterministic — `claude -p` is non-deterministic. Run ablation twice if a verdict is borderline.
 - For before/after token diff: the Memory log's `Budget:` line from each run is the comparison data point. No separate snapshot mechanism needed for the diff.
-- When `--baseline` mode is used, probe outputs are persisted to `memory/YYYY-MM-DD/context-audit-baseline/` and are gitignored (daily memory dirs are gitignored per `.gitignore`).
+- When `--baseline` mode is used, probe outputs are persisted to `.oh/memory/YYYY-MM-DD/context-audit-baseline/` and are gitignored (daily memory dirs are gitignored per `.gitignore`).
 - Do not penalize `CLAUDE.md` on Dimension B (load-bearing) because it's the source of truth and may have few inbound citations by design — it doesn't need to be cited; it is the orchestrator instructions.
 
 ## Reference

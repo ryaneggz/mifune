@@ -68,7 +68,7 @@ If the user types **STOP** during the brief, halt — do not finish the thought,
 
 ### 6. Memory Protocol
 
-Append to `memory/<UTC-date>/log.md`:
+Append to `.oh/memory/<UTC-date>/log.md`:
 
 ```markdown
 ## interview -- HH:MM UTC
@@ -78,7 +78,7 @@ Append to `memory/<UTC-date>/log.md`:
 - **Observation**: <one sentence on whether the questions landed (changed the work, or were noise)>
 ```
 
-Then run the qualify/improve loop per `.mifune/skills/retro/references/memory-protocol.md`. If a question pattern landed especially well or poorly across runs, that may merit a line in `memory/MEMORY.md`.
+Then run the qualify/improve loop per `.mifune/skills/retro/references/memory-protocol.md`. If a question pattern landed especially well or poorly across runs, that may merit a line in `.oh/memory/MEMORY.md`.
 
 ## Question quality bar
 

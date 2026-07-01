@@ -73,7 +73,7 @@ git rm -r --cached --ignore-unmatch .oh/tasks/*/  # remove sub-dirs if any leake
 git checkout upstream/development -- .mifune/skills/wiki/corpus/ 2>/dev/null || \
   git checkout upstream/development -- .claude/skills/wiki/corpus/ 2>/dev/null || true
 # Agent identity files — keep public stubs only
-git checkout upstream/development -- memory/MEMORY.md
+git checkout upstream/development -- .oh/memory/MEMORY.md
 git checkout upstream/development -- context/IDENTITY.md
 git checkout upstream/development -- context/SOUL.md
 git checkout upstream/development -- context/USER.md
@@ -81,14 +81,14 @@ git checkout upstream/development -- context/TOOLS.md
 # Agent folders (docs/agents/, .oh/tasks/archive/) if present
 git checkout upstream/development -- docs/agents/ 2>/dev/null || true
 # Daily memory logs (gitignored locally, but check)
-git checkout upstream/development -- memory/ 2>/dev/null || true
+git checkout upstream/development -- .oh/memory/ 2>/dev/null || true
 # Codex plans / local promotion notes
 git checkout upstream/development -- .codex/plans/ 2>/dev/null || true
 ```
 
 Verify each sanitized path is clean:
 ```bash
-git diff upstream/development HEAD -- .oh/tasks/ memory/ context/ .codex/plans/
+git diff upstream/development HEAD -- .oh/tasks/ .oh/memory/ context/ .codex/plans/
 ```
 Output must be empty. If not, inspect the diff and reset the leaking paths.
 

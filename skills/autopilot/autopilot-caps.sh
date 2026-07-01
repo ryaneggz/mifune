@@ -139,8 +139,8 @@ log_skip() {
   mkdir -p "$root/.oh/crons"
   printf '[%s] autopilot: %s\n' "$(date -Iseconds)" "$status" | append_runtime_log "$root/.oh/crons/.cron.log"
   day=$(date -u +%Y-%m-%d); time=$(date -u +%H:%M)
-  mkdir -p "$root/memory/$day"
-  append_runtime_log "$root/memory/$day/log.md" <<EOF
+  mkdir -p "$root/.oh/memory/$day"
+  append_runtime_log "$root/.oh/memory/$day/log.md" <<EOF
 
 ## Autopilot -- $time UTC
 - **Result**: $status
@@ -150,7 +150,7 @@ log_skip() {
 - **Action**: $action
 - **Observation**: $observation
 EOF
-  printf 'autopilot-caps: %s — logged to %s/memory/%s/log.md + .oh/crons/.cron.log\n' "$status" "$root" "$day" >&2
+  printf 'autopilot-caps: %s — logged to %s/.oh/memory/%s/log.md + .oh/crons/.cron.log\n' "$status" "$root" "$day" >&2
 }
 
 # Query open autopilot PR counts. `|| echo ERR` keeps `set -e` from killing us on

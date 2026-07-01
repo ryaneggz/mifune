@@ -15,7 +15,7 @@ Rewrite a file in compressed form. Read core rules first: `.claude/skills/cavema
 ## Scope (check first — refuse out of scope)
 
 In-scope targets only:
-- files under `memory/**` (notes, daily logs)
+- files under `.oh/memory/**` (notes, daily logs)
 - untracked scratch files (not committed to git)
 - a file the user passes with explicit "compress this anyway" override
 
@@ -36,4 +36,4 @@ Everything else is **out of scope** — refuse with a one-line reason. In partic
 
 - **Never** compress: `LICENSE`, `CHANGELOG.md`, generated/lock files (`*.lock`, `skills.lock`), or anything under `.github/`. These have exact-format contracts.
 - **Refuse** files where compression would break a parser (JSON, YAML data, `prd.json`) — compression is for human-prose docs, not machine-read data.
-- Compressing a `memory/` note is fine; preserve the `## Heading -- HH:MM UTC` log structure (`.mifune/skills/retro/references/memory-protocol.md`).
+- Compressing a `.oh/memory/` note is fine; preserve the `## Heading -- HH:MM UTC` log structure (`.mifune/skills/retro/references/memory-protocol.md`).
