@@ -43,9 +43,9 @@ content. The contract is non-negotiable:
 - `--include-prompt-text` applies a redaction pass (line-level token patterns +
   block-level key bodies) and prints a `WARNING` banner. Use it only when you must
   read the prompt wording, and never commit the result.
-- All artifacts land in the **gitignored** `memory/<UTC-date>/` directory. Never
+- All artifacts land in the **gitignored** `.oh/memory/<UTC-date>/` directory. Never
   stage, commit, or paste a transcript or an `--include-prompt-text` report.
-- The engine never edits `memory/MEMORY.md` or `context/IDENTITY.md`. Only Step 4
+- The engine never edits `.oh/memory/MEMORY.md` or `context/IDENTITY.md`. Only Step 4
   of this skill writes there, and only after explicit `APPROVE`.
 
 ## When to use
@@ -93,7 +93,7 @@ node "${CLAUDE_SKILL_DIR}/scripts/mine-traces.mjs" "${args[@]}"
 ```
 
 The engine writes `prompt-miner-<UTC-date>.json` + `.md` to `--out`
-(default `memory/<UTC-date>/`), unless `--dry-run` was passed (it prints the JSON
+(default `.oh/memory/<UTC-date>/`), unless `--dry-run` was passed (it prints the JSON
 dataset to stdout and writes nothing). The flag surface (defaults in parens):
 
 - `--harness all|claude|pi` (all), `--since`/`--until` (YYYY-MM-DD),
@@ -161,11 +161,11 @@ then gate it exactly like `/retro` (`.claude/skills/retro/SKILL.md` § 6):
    Go in Memory" table (`.mifune/skills/retro/references/memory-protocol.md`) — secrets, raw output, plans,
    anything re-derivable in under a minute.
 2. **Dedup against existing memory.** For each surviving candidate, grep
-   `memory/MEMORY.md` and `context/IDENTITY.md` for the same substance; if it is
+   `.oh/memory/MEMORY.md` and `context/IDENTITY.md` for the same substance; if it is
    already captured, link or skip — never double-write (this is the same dedup
    `/retro` performs in its qualify filter).
 3. **Tier classification.** A marker is descriptive ("this corpus shows X prompt
-   trait correlates with better `<type>` sessions") → `memory/MEMORY.md`. Only a
+   trait correlates with better `<type>` sessions") → `.oh/memory/MEMORY.md`. Only a
    marker that has generalized across many sessions into a prescriptive principle
    ("always include acceptance criteria") earns a `context/IDENTITY.md` proposal —
    and IDENTITY.md is **never** auto-written.
@@ -181,7 +181,7 @@ then gate it exactly like `/retro` (`.claude/skills/retro/SKILL.md` § 6):
    Type APPROVE to write, SKIP to discard any item, or EDIT <n> <new text> to revise.
    ```
 
-5. **Write approved items.** On `APPROVE`, append to `memory/MEMORY.md` under
+5. **Write approved items.** On `APPROVE`, append to `.oh/memory/MEMORY.md` under
    `## Lessons Learned` (and, if approved, `context/IDENTITY.md` under
    `## Lessons learned (append-only)`). Both files are append-only; never edit
    existing entries. `--report-only` and `--dry-run` skip this step entirely.
@@ -203,7 +203,7 @@ bash "${CLAUDE_SKILL_DIR}/scripts/render-log-entry.sh" \
   --top-marker "<one-line strongest marker, or 'none'>"
 ```
 
-The helper writes only to `memory/<UTC-date>/log.md` — never to `MEMORY.md` or
+The helper writes only to `.oh/memory/<UTC-date>/log.md` — never to `MEMORY.md` or
 `IDENTITY.md`. Even `--report-only` runs emit this daily-log line (the engine's
 `--report-only` contract: report + daily log, but no MEMORY/IDENTITY mutation).
 

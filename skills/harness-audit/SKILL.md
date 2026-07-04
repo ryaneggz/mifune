@@ -74,7 +74,7 @@ fi
 ls "$AUDIT_ROOT/.claude/skills/"
 ls "$AUDIT_ROOT/.claude/agents/" 2>/dev/null || echo "no agents dir"
 ls "$AUDIT_ROOT/crons/" 2>/dev/null || echo "no crons"
-ls "$AUDIT_LOG_ROOT/memory/" 2>/dev/null | tail -10
+ls "$AUDIT_LOG_ROOT/.oh/memory/" 2>/dev/null | tail -10
 ls "$AUDIT_ROOT/.mifune/skills/wiki/corpus/" 2>/dev/null | head -20
 
 # Package health
@@ -90,11 +90,11 @@ git -C "$AUDIT_ROOT" worktree list 2>/dev/null
 # Recent long-term memory (durable shared artifact). In cron worktree mode,
 # source inspection stays on AUDIT_ROOT, but long-term lessons live in the
 # shared checkout resolved as AUDIT_LOG_ROOT.
-if [ -r "$AUDIT_LOG_ROOT/memory/MEMORY.md" ]; then
-  printf 'long_term_memory: loaded %s\n' "$AUDIT_LOG_ROOT/memory/MEMORY.md"
-  tail -40 "$AUDIT_LOG_ROOT/memory/MEMORY.md"
+if [ -r "$AUDIT_LOG_ROOT/.oh/memory/MEMORY.md" ]; then
+  printf 'long_term_memory: loaded %s\n' "$AUDIT_LOG_ROOT/.oh/memory/MEMORY.md"
+  tail -40 "$AUDIT_LOG_ROOT/.oh/memory/MEMORY.md"
 else
-  printf 'long_term_memory: missing-or-unreadable %s\n' "$AUDIT_LOG_ROOT/memory/MEMORY.md"
+  printf 'long_term_memory: missing-or-unreadable %s\n' "$AUDIT_LOG_ROOT/.oh/memory/MEMORY.md"
 fi
 ```
 
@@ -154,7 +154,7 @@ Launch 4 Agent tool calls **in a single message**. Each receives the Context Sna
 >
 > 3. **Issue template completeness** — List `.github/ISSUE_TEMPLATE/` files. For each template, check: does it have required fields, clear labels, and assignment guidance?
 >
-> 4. **Wiki/memory utilization** — Count wiki pages under `.mifune/skills/wiki/corpus/`. Count daily memory logs under `memory/`. Are logs recent (within 7 days)? Are wiki pages populated or placeholder-empty?
+> 4. **Wiki/memory utilization** — Count wiki pages under `.mifune/skills/wiki/corpus/`. Count daily memory logs under `.oh/memory/`. Are logs recent (within 7 days)? Are wiki pages populated or placeholder-empty?
 >
 > **Return format (Ultra compression):**
 > ```
@@ -228,7 +228,7 @@ Launch 4 Agent tool calls **in a single message**. Each receives the Context Sna
 >
 > **Audit areas:**
 >
-> 1. **Memory system quality** — Use the Context Snapshot's `AUDIT_LOG_ROOT` memory/log context (not `AUDIT_ROOT` when they differ) to inspect the 5 most recent daily logs. Are entries following the Memory Improvement Protocol (Result/Action/Observation/Duration)? Is quality declining over time (shorter entries, missing fields)? Are entries actually present? Report if `long_term_memory` is `missing-or-unreadable`.
+> 1. **Memory system quality** — Use the Context Snapshot's `AUDIT_LOG_ROOT` .oh/memory/log context (not `AUDIT_ROOT` when they differ) to inspect the 5 most recent daily logs. Are entries following the Memory Improvement Protocol (Result/Action/Observation/Duration)? Is quality declining over time (shorter entries, missing fields)? Are entries actually present? Report if `long_term_memory` is `missing-or-unreadable`.
 >
 > 2. **Wiki utilization** — List all files under `.mifune/skills/wiki/corpus/`. For each, check if it has substantive content (>10 lines) or is a placeholder stub. What percentage is populated?
 >
@@ -318,7 +318,7 @@ After all 4 auditors return and pass the auditor-output validation gate, synthes
 
 ### 6. Memory Protocol
 
-Append to `memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
+Append to `.oh/memory/YYYY-MM-DD/log.md` where today = `date -u +%Y-%m-%d`:
 
 ```markdown
 ## [Harness Audit] — HH:MM UTC
@@ -355,8 +355,8 @@ See `.mifune/skills/retro/references/memory-protocol.md` for the canonical Memor
 | Orchestrator skills | `.claude/skills/` |
 | Workspace skills | `workspace/.claude/skills/` when created by a pack/runtime (not part of the minimal workspace template) |
 | Crons | `crons/` |
-| Memory logs | `memory/YYYY-MM-DD/log.md` |
-| Long-term memory | `memory/MEMORY.md` |
+| Memory logs | `.oh/memory/YYYY-MM-DD/log.md` |
+| Long-term memory | `.oh/memory/MEMORY.md` |
 | Wiki | `.mifune/skills/wiki/corpus/` |
 | Compose | `.devcontainer/docker-compose.yml` |
 | Entrypoint | `.devcontainer/entrypoint.sh` |

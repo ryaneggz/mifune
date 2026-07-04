@@ -73,7 +73,7 @@ at `/spec plan` and emit no `STATUS:` line (a missing spec is a failure, not a c
 ## Memory Protocol
 
 `/critique` and `/approve` each append their own log entry. `critique` adds one
-roll-up line to `memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+roll-up line to `.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## spec-critique -- HH:MM UTC

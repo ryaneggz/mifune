@@ -104,7 +104,7 @@ done
 
 ## Memory Protocol
 
-After a run, append to `memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
+After a run, append to `.oh/memory/<UTC-date>/log.md` per `.mifune/skills/retro/references/memory-protocol.md`:
 
 ```markdown
 ## spec-plan -- HH:MM UTC

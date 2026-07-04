@@ -222,10 +222,10 @@ Always run this step regardless of match count. Get UTC time first:
 ```bash
 date -u +%H:%M
 TODAY=$(date -u +%Y-%m-%d)
-mkdir -p "$HARNESS/memory/$TODAY"
+mkdir -p "$HARNESS/.oh/memory/$TODAY"
 ```
 
-Append to `memory/<UTC-date>/log.md`:
+Append to `.oh/memory/<UTC-date>/log.md`:
 
 ```markdown
 ## /wiki query -- HH:MM UTC

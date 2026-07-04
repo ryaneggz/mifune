@@ -7,7 +7,7 @@ description: |
   turn each signal into a falsifiable hypothesis, cite session evidence for
   AND against it, assign a verdict (supported / refuted / inconclusive) and a
   confidence level, then promote only supported, sufficiently-confident
-  hypotheses into the harness memory tiers (memory/MEMORY.md,
+  hypotheses into the harness memory tiers (.oh/memory/MEMORY.md,
   context/IDENTITY.md) behind a propose-then-confirm gate. Reflects on six
   learning/knowledge subsystems through the lens of this session — continual
   learning, context compression, reinforcement learning, wiki, docs, and
@@ -21,7 +21,7 @@ description: |
 
 # Retro
 
-Scientific session-closing retrospective. Turn the current conversation's signals into falsifiable hypotheses, test each against session evidence (for and against), assign a verdict and confidence, and promote only the supported, sufficiently-confident ones — with explicit confirmation — into the harness memory tiers (`memory/MEMORY.md`, `context/IDENTITY.md`). Always appends a log entry regardless of outcome.
+Scientific session-closing retrospective. Turn the current conversation's signals into falsifiable hypotheses, test each against session evidence (for and against), assign a verdict and confidence, and promote only the supported, sufficiently-confident ones — with explicit confirmation — into the harness memory tiers (`.oh/memory/MEMORY.md`, `context/IDENTITY.md`). Always appends a log entry regardless of outcome.
 
 This is the deliberate "Improve" pass of the Memory Improvement Protocol defined in `.mifune/skills/retro/references/memory-protocol.md`, now evidence-driven. Running it as a named skill turns an optional afterthought into a first-class, propose-then-confirm operation — and the scientific layer guards against overfitting a single session into a durable lesson.
 
@@ -95,7 +95,7 @@ Every signal from the session passes through four moves before it can become a m
 
 **Promotion rule:**
 
-- Only `supported` + `medium`-or-higher confidence may reach `memory/MEMORY.md`.
+- Only `supported` + `medium`-or-higher confidence may reach `.oh/memory/MEMORY.md`.
 - `context/IDENTITY.md` *additionally* requires cross-session generalization (a single session, however well-supported, is not a principle).
 - `refuted`, `inconclusive`, and any `low`-confidence hypothesis stay in the log only — never promoted.
 
@@ -105,7 +105,7 @@ Seed hypotheses by asking, for each subsystem, what *this session* revealed abou
 
 | Subsystem | Guiding question (what did this session reveal?) | Lives in / deep-dive skill |
 |-----------|--------------------------------------------------|----------------------------|
-| Continual learning | Did prior memory/identity get used, ignored, or contradicted? Did anything durable emerge? | `memory/MEMORY.md`, `context/IDENTITY.md` |
+| Continual learning | Did prior memory/identity get used, ignored, or contradicted? Did anything durable emerge? | `.oh/memory/MEMORY.md`, `context/IDENTITY.md` |
 | Context compression | Was loaded context bloated/redundant, or did a rule prove load-bearing? | `/context-audit`, `/caveman` |
 | Reinforcement learning | Did advisor/executor or recursive-delegation patterns help or hurt? Over/under-delegation? | `.mifune/skills/advisor/SKILL.md`, `recursive-delegation.md` |
 | Wiki | Did the session surface knowledge that belongs in the wiki, or hit stale/missing entries? | `/wiki ingest`, `/wiki lint` |
@@ -145,7 +145,7 @@ Discard any surviving hypothesis that matches a row in the "What Does NOT Go in 
 | Is a step-by-step task plan | Plans belong in `tasks/<name>/prd.json` |
 | Re-derivable in under a minute | Reading one file answers it — don't memorize |
 
-Also discard any hypothesis already captured, verbatim or in substance, in `memory/MEMORY.md` or `context/IDENTITY.md` — link or skip; never double-write. Finally, drop from promotion every hypothesis whose verdict is `refuted` or `inconclusive`, or whose confidence is `low` (these remain in the log only).
+Also discard any hypothesis already captured, verbatim or in substance, in `.oh/memory/MEMORY.md` or `context/IDENTITY.md` — link or skip; never double-write. Finally, drop from promotion every hypothesis whose verdict is `refuted` or `inconclusive`, or whose confidence is `low` (these remain in the log only).
 
 ### 5. Classify survivors by tier
 
@@ -153,8 +153,8 @@ For each surviving hypothesis — now carrying its evidence and confidence — c
 
 | Tier | Write to | Criterion |
 |------|----------|-----------|
-| **Log** | `memory/<UTC-date>/log.md` | Transient observation: true of this run, not necessarily future ones. Free to write. |
-| **MEMORY.md** | `memory/MEMORY.md` under `## Lessons Learned` | Experiential, session-specific: "this session showed X is true of this codebase." Descriptive tone. Propose-then-confirm. |
+| **Log** | `.oh/memory/<UTC-date>/log.md` | Transient observation: true of this run, not necessarily future ones. Free to write. |
+| **MEMORY.md** | `.oh/memory/MEMORY.md` under `## Lessons Learned` | Experiential, session-specific: "this session showed X is true of this codebase." Descriptive tone. Propose-then-confirm. |
 | **IDENTITY.md** | `context/IDENTITY.md` under `## Lessons learned (append-only)` | Graduated principle: applies across contexts, not just this run. Prescriptive tone ("always X"). **Never auto-write.** Propose a diff for approval. A lesson earns this only when it generalizes across sessions. |
 
 When in doubt between MEMORY.md and IDENTITY.md: if you would scope it to "this session" or "this codebase right now," it belongs in MEMORY.md. If you would remove the scoping and say "always," it belongs in IDENTITY.md.
@@ -181,7 +181,7 @@ The probe id follows the pattern `<subsystem-slug>-<YYYYMMDD>` (e.g., `memory-sc
 
 ### 6. Propose-then-confirm gate
 
-Before writing to `memory/MEMORY.md` or `context/IDENTITY.md`, present the proposed additions as a clearly formatted block. Each proposed line shows its `[subsystem · confidence]` tag and a one-clause evidence basis:
+Before writing to `.oh/memory/MEMORY.md` or `context/IDENTITY.md`, present the proposed additions as a clearly formatted block. Each proposed line shows its `[subsystem · confidence]` tag and a one-clause evidence basis:
 
 ```
 Proposed MEMORY.md addition(s):
@@ -193,7 +193,7 @@ Proposed IDENTITY.md addition(s):
 Type APPROVE to write, SKIP to discard any item, or EDIT <n> <new text> to revise.
 ```
 
-Do not write to either file until the user responds. Log-tier entries do not require approval. If `--dry-run` was passed, write only the required `memory/<UTC-date>/log.md` entry with `Result: DRY-RUN`; never write MEMORY.md or IDENTITY.md in dry-run mode.
+Do not write to either file until the user responds. Log-tier entries do not require approval. If `--dry-run` was passed, write only the required `.oh/memory/<UTC-date>/log.md` entry with `Result: DRY-RUN`; never write MEMORY.md or IDENTITY.md in dry-run mode.
 
 Before proposing, pipe candidate lines through the self-contained duplicate helper and skip exact/substantive duplicates it reports:
 
@@ -205,7 +205,7 @@ printf "%s\n" "<candidate line>" | bash "${CLAUDE_SKILL_DIR}/scripts/check-memor
 
 For each APPROVED item:
 
-**`memory/MEMORY.md`** — append under `## Lessons Learned`:
+**`.oh/memory/MEMORY.md`** — append under `## Lessons Learned`:
 ```markdown
 - **YYYY-MM-DD**: <lesson>
 ```
@@ -224,7 +224,7 @@ Always run this step, regardless of whether anything was promoted. Get the curre
 ```bash
 date -u +%H:%M
 TODAY=$(date -u +%Y-%m-%d)
-mkdir -p "memory/$TODAY"
+mkdir -p ".oh/memory/$TODAY"
 ```
 
 Render the log entry with the skill-local helper, then append it with the shared locked append primitive:
@@ -236,14 +236,14 @@ LOG_ENTRY=$(bash "${CLAUDE_SKILL_DIR}/scripts/render-log-entry.sh" \
   --hypotheses <total> --supported <n> --refuted <n> --inconclusive <n> \
   --memory <n> --identity <n> \
   --observation "<one sentence — strongest supported finding, or no durable patterns>")
-printf "%s\n" "$LOG_ENTRY" | .oh/scripts/locked-append.sh "memory/$TODAY/log.md"
+printf "%s\n" "$LOG_ENTRY" | .oh/scripts/locked-append.sh ".oh/memory/$TODAY/log.md"
 ```
 
 Use `--result DRY-RUN` for dry-runs and `--result SKIPPED-TRIVIAL` for trivial skips.
 
 ## MEMORY.md vs IDENTITY.md boundary
 
-| | `memory/MEMORY.md` | `context/IDENTITY.md` |
+| | `.oh/memory/MEMORY.md` | `context/IDENTITY.md` |
 |-|--------------------|-----------------------|
 | **Tone** | Descriptive — "this session showed…" | Prescriptive — "always X", "never Y" |
 | **Scope** | Session or codebase-specific observation | Generalizes across contexts |
