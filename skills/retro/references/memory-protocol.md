@@ -136,7 +136,7 @@ is not: treat existing entries as immutable once written.
 | Secrets, tokens, credentials | Memory files may be committed; secrets go in environment variables or a vault |
 | Raw stdout / command output | Transient logs belong in `/tmp`; only the interpretation goes in memory |
 | Content destined for commit messages or PR bodies | Those belong in the commit/PR; duplicating here creates drift |
-| Step-by-step task plans | Plans belong in `tasks/<name>/prd.json` or the PRD; memory holds outcomes, not intentions |
+| Step-by-step task plans | Plans belong in `.oh/tasks/<name>/prd.json` or the PRD; memory holds outcomes, not intentions |
 | Anything re-derivable in under a minute | If reading one file answers the question, don't memorize the answer |
 
 ## Boundary with `context/IDENTITY.md`

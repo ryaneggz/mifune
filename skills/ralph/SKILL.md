@@ -11,11 +11,11 @@ Converts existing PRDs to the prd.json format that Ralph uses for autonomous exe
 
 ## The Job
 
-Convert `tasks/<short-desc>/prd.md` to `tasks/<short-desc>/prd.json` in the same folder.
+Convert `.oh/tasks/<short-desc>/prd.md` to `.oh/tasks/<short-desc>/prd.json` in the same folder.
 
 Required arguments:
 
-- Folder path (positional, e.g. `tasks/install-prereq-detection/`). The folder name is `<short-desc>`.
+- Folder path (positional, e.g. `.oh/tasks/install-prereq-detection/`). The folder name is `<short-desc>`.
 - `--issue <N>` — GitHub issue number this PRD addresses. Required. The branch name embeds this.
 - `--prefix <type>` — branch prefix per `.claude/skills/git/SKILL.md`. One of `feat | bug | task | audit | skill | agent`. Default: `feat`.
 
@@ -25,7 +25,7 @@ Required arguments:
 <prefix>/<issue#>-<short-desc>
 ```
 
-Example: folder `tasks/install-prereq-detection/` + `--issue 175` + `--prefix task` → `branchName: "task/175-install-prereq-detection"`.
+Example: folder `.oh/tasks/install-prereq-detection/` + `--issue 175` + `--prefix task` → `branchName: "task/175-install-prereq-detection"`.
 
 If `--issue` is missing, hard-fail with: "issue number required — open the GitHub issue first per `.claude/skills/git/SKILL.md` and re-run with `--issue <N>`." This matches the project's "issue first, then branch" workflow.
 
@@ -264,7 +264,7 @@ Add ability to mark tasks with different statuses.
 
 ## Archiving Previous Runs
 
-Archive fires only when **all** of the following hold for `tasks/<short-desc>/`:
+Archive fires only when **all** of the following hold for `.oh/tasks/<short-desc>/`:
 
 1. `prd.json` already exists (re-running ralph on a feature that ran before).
 2. `progress.txt` has content beyond the header (the runner has written entries — there is execution history worth preserving).
@@ -272,7 +272,7 @@ Archive fires only when **all** of the following hold for `tasks/<short-desc>/`:
 If both hold:
 
 1. Read the current `prd.json` and `progress.txt`.
-2. Create `tasks/<short-desc>/archive/<ISO-timestamp>/` where the timestamp is `YYYY-MM-DDTHH-MM-SS` (UTC; second-resolution avoids same-day collisions).
+2. Create `.oh/tasks/<short-desc>/archive/<ISO-timestamp>/` where the timestamp is `YYYY-MM-DDTHH-MM-SS` (UTC; second-resolution avoids same-day collisions).
 3. Copy `prd.json` and `progress.txt` into that directory.
 4. Reset `progress.txt` to its header only:
 
@@ -291,8 +291,8 @@ Different `branchName`s do not trigger archiving. In the per-folder layout, a di
 
 Before writing prd.json, verify:
 
-- [ ] Operating on `tasks/<short-desc>/` — folder name is the feature name
-- [ ] **Archive on rerun:** if `prd.json` exists AND `progress.txt` has run history, archived to `tasks/<short-desc>/archive/<ISO-timestamp>/` before overwriting
+- [ ] Operating on `.oh/tasks/<short-desc>/` — folder name is the feature name
+- [ ] **Archive on rerun:** if `prd.json` exists AND `progress.txt` has run history, archived to `.oh/tasks/<short-desc>/archive/<ISO-timestamp>/` before overwriting
 - [ ] Each story is completable in one iteration (small enough)
 - [ ] Stories are ordered by dependency (schema to backend to UI)
 - [ ] Every story has "Typecheck passes" as criterion

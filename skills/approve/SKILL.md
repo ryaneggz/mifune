@@ -23,9 +23,9 @@ routes on.
 
 **Core principle: gate the spec before anything is committed.** This embodies
 critic-before-commitment: the cheapest thing to revise is the spec itself, so the
-gate runs while ONLY local artifacts exist (`tasks/<slug>/prd.md`, `prd.json`,
+gate runs while ONLY local artifacts exist (`.oh/tasks/<slug>/prd.md`, `prd.json`,
 `critique.md`) — **before** the GitHub issue, branch, or PR. A `DENIED` is therefore
-fully reversible (`rm -rf tasks/<slug>/`); no GitHub-side state is created until
+fully reversible (`rm -rf .oh/tasks/<slug>/`); no GitHub-side state is created until
 after `APPROVED`. (Mirrors `/ship-spec` Stage 4, which encodes the same HALT gate
 inline; this node makes it a reusable decision.)
 
@@ -40,14 +40,14 @@ run the critics itself — if `critique.md` is absent, the gate cannot decide (s
 
 | Arg | Meaning |
 |-----|---------|
-| `<slug>` | The task slug — locates `tasks/<slug>/critique.md` (the critic findings) and `tasks/<slug>/prd.md`. Required. |
+| `<slug>` | The task slug — locates `.oh/tasks/<slug>/critique.md` (the critic findings) and `.oh/tasks/<slug>/prd.md`. Required. |
 | `--auto` | Unattended mode (e.g. under `/autopilot`): never prompt a human; the SEVERITY auto-gate alone decides. Without it, a borderline finding may surface an `AskUserQuestion` override (see gate). |
 
 ---
 
 ## The gate
 
-Read `tasks/<slug>/critique.md`. The critics write findings in the established
+Read `.oh/tasks/<slug>/critique.md`. The critics write findings in the established
 shape (`/ship-spec` Stage 3):
 
 ```
@@ -84,7 +84,7 @@ unresolved high-severity finding is `DENIED`. Never auto-approve a borderline hi
 |---|---|
 | `APPROVED` → `implement` | `DENIED` → `plan` (revise the PRD and re-critique) |
 
-On `DENIED`, name the blocking finding(s) and point at `tasks/<slug>/critique.md` so
+On `DENIED`, name the blocking finding(s) and point at `.oh/tasks/<slug>/critique.md` so
 the `plan` node knows exactly what to revise. The revision is local-only — nothing
 GitHub-side exists yet.
 

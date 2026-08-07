@@ -19,7 +19,7 @@ conventions, git workflow, or where files live.
 1. Read `CLAUDE.md` for the orchestrator contract — what the root-level
    agent does and does not do.
 2. For layout questions, read the per-directory `README.md` files (e.g.
-   `.oh/README.md`, `crons/README.md`, `tasks/README.md`,
+   `.oh/README.md`, `crons/README.md`, `.oh/tasks/README.md`,
    `.oh/scripts/README.md`, `.worktrees/README.md`) and the `Project
    Structure` section of `CLAUDE.md`. There is no single comprehensive
    tree — use the filesystem and the directory READMEs.
