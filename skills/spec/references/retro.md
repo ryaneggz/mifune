@@ -13,7 +13,7 @@ lessons.
 **Core principle: compose `/retro`, scoped to this task.** `/retro` already implements the
 scientific session-closing pass — falsifiable hypotheses, evidence for *and* against, a
 verdict + confidence, and a propose-then-confirm promotion into `memory/MEMORY.md` /
-`context/IDENTITY.md`. `retro` is the execution-side application of it: point `/retro`
+`.oh/context/IDENTITY.md`. `retro` is the execution-side application of it: point `/retro`
 at the just-built `tasks/<slug>/` run so the reflection is anchored to that unit's
 artifacts (`prd.md`, `progress.txt`, `prd.json`, `critique.md`, the `/audit` evidence)
 rather than the whole ambient session.

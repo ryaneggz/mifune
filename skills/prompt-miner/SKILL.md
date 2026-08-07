@@ -45,7 +45,7 @@ content. The contract is non-negotiable:
   read the prompt wording, and never commit the result.
 - All artifacts land in the **gitignored** `memory/<UTC-date>/` directory. Never
   stage, commit, or paste a transcript or an `--include-prompt-text` report.
-- The engine never edits `memory/MEMORY.md` or `context/IDENTITY.md`. Only Step 4
+- The engine never edits `memory/MEMORY.md` or `.oh/context/IDENTITY.md`. Only Step 4
   of this skill writes there, and only after explicit `APPROVE`.
 
 ## When to use
@@ -161,13 +161,13 @@ then gate it exactly like `/retro` (`.claude/skills/retro/SKILL.md` § 6):
    Go in Memory" table (`.mifune/skills/retro/references/memory-protocol.md`) — secrets, raw output, plans,
    anything re-derivable in under a minute.
 2. **Dedup against existing memory.** For each surviving candidate, grep
-   `memory/MEMORY.md` and `context/IDENTITY.md` for the same substance; if it is
+   `memory/MEMORY.md` and `.oh/context/IDENTITY.md` for the same substance; if it is
    already captured, link or skip — never double-write (this is the same dedup
    `/retro` performs in its qualify filter).
 3. **Tier classification.** A marker is descriptive ("this corpus shows X prompt
    trait correlates with better `<type>` sessions") → `memory/MEMORY.md`. Only a
    marker that has generalized across many sessions into a prescriptive principle
-   ("always include acceptance criteria") earns a `context/IDENTITY.md` proposal —
+   ("always include acceptance criteria") earns a `.oh/context/IDENTITY.md` proposal —
    and IDENTITY.md is **never** auto-written.
 4. **Propose, then wait.** Present the block and stop until the user responds:
 
@@ -182,7 +182,7 @@ then gate it exactly like `/retro` (`.claude/skills/retro/SKILL.md` § 6):
    ```
 
 5. **Write approved items.** On `APPROVE`, append to `memory/MEMORY.md` under
-   `## Lessons Learned` (and, if approved, `context/IDENTITY.md` under
+   `## Lessons Learned` (and, if approved, `.oh/context/IDENTITY.md` under
    `## Lessons learned (append-only)`). Both files are append-only; never edit
    existing entries. `--report-only` and `--dry-run` skip this step entirely.
 
