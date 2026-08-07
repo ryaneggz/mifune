@@ -24,7 +24,7 @@ When moving or renaming the canonical skill path, update all path-sensitive call
 
 ## Script pitfall
 
-Skill support scripts may be executed through `.mifune/skills/...`, `.claude/skills/...`, `.codex/skills/...`, `.pi/skills/...`, or Hermes' linked `.hermes/skills/openharness/...` path. Avoid fixed-depth root derivation such as `SCRIPT_DIR/../../..`. Instead, walk upward until an invariant repo marker exists, e.g. `evals/probes`, `AGENTS.md`, or `.git`.
+Skill support scripts may be executed through `.mifune/skills/...`, `.claude/skills/...`, `.codex/skills/...`, `.pi/skills/...`, or Hermes' linked `.hermes/skills/openharness/...` path. Avoid fixed-depth root derivation such as `SCRIPT_DIR/../../..`. Instead, walk upward until an invariant repo marker exists, e.g. `.oh/evals/probes`, `AGENTS.md`, or `.git`.
 
 ## Verification checklist
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# /eval runner — discover evals/probes/*.sh, run each against real state, and
-# write the evals/RESULTS.md benchmark scoreboard (overwrite-row-per-probe).
+# /eval runner — discover .oh/evals/probes/*.sh, run each against real state, and
+# write the .oh/evals/RESULTS.md benchmark scoreboard (overwrite-row-per-probe).
 # Exit-code oracle per probe: 0=PASS 1=REGRESSION 2=SKIPPED 124=TIMEOUT other=ERROR.
 set -euo pipefail
 
@@ -9,12 +9,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # directly through the neutral `.mifune/skills` source directory. Walk upward until the
 # repo's eval corpus is found instead of hard-coding a fixed depth.
 ROOT="$SCRIPT_DIR"
-while [ "$ROOT" != "/" ] && [ ! -d "$ROOT/evals/probes" ]; do
+while [ "$ROOT" != "/" ] && [ ! -d "$ROOT/.oh/evals/probes" ]; do
   ROOT="$(dirname "$ROOT")"
 done
-[ -d "$ROOT/evals/probes" ] || { echo "could not locate repo root from $SCRIPT_DIR" >&2; exit 1; }
-PROBES_DIR="$ROOT/evals/probes"
-RESULTS="$ROOT/evals/RESULTS.md"
+[ -d "$ROOT/.oh/evals/probes" ] || { echo "could not locate repo root from $SCRIPT_DIR" >&2; exit 1; }
+PROBES_DIR="$ROOT/.oh/evals/probes"
+RESULTS="$ROOT/.oh/evals/RESULTS.md"
 TIMEOUT_SECS=30
 
 FILTER_PROBE=""
@@ -39,7 +39,7 @@ trap '[ -n "$tmp" ] && rm -f "$tmp"' EXIT
 # --- M-2: recover orphaned ablation backups from a crashed prior run ---
 # .oh/scripts/ablate.sh records in-flight "<target>\t<bak>" lines in this sentinel;
 # if a prior ablation was SIGKILLed before its trap fired, restore here.
-SENTINEL="$ROOT/evals/.ablation-active"
+SENTINEL="$ROOT/.oh/evals/.ablation-active"
 if [ -f "$SENTINEL" ]; then
   while IFS=$'\t' read -r target bak; do
     if [ -n "${bak:-}" ] && [ -f "$bak" ]; then
@@ -129,7 +129,7 @@ cat > "$tmp" <<'HDR'
 
 Current status per probe id, written by `/eval`. Policy: **overwrite the row per
 probe id; git history is the time series.** Schema and exit-code semantics are in
-[`evals/README.md`](README.md). `SKIPPED` does not count toward pass-rate.
+[`.oh/evals/README.md`](README.md). `SKIPPED` does not count toward pass-rate.
 
 | probe | tier | last-run (UTC) | status | source |
 |-------|------|----------------|--------|--------|

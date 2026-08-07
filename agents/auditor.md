@@ -54,7 +54,7 @@ no hand-run probe, no bespoke staleness scorer). If a skill owns it, you invoke 
 open-PR queue in one bulk query), `/audit` (ONE implementation vs its `tasks/<slug>/prd.json`),
 `/context-audit` (the default-loaded context budget), `/skill-lint` (skill staleness),
 `/drift-check` (origin↔upstream / branch-behind / cron-staleness drift), and `/eval` (the
-deterministic `evals/probes/*.sh` suite); it is orthogonal to the `critic` agent, which
+deterministic `.oh/evals/probes/*.sh` suite); it is orthogonal to the `critic` agent, which
 adversarially reviews ONE task's plan during `/spec critique` — not the audit skills.**
 
 This agent audits **harness infrastructure only** — skills, rules, docs, scripts, crons,
@@ -82,7 +82,7 @@ non-overlapping reason the family exists.
 | `/context-audit` | The default-loaded context budget | `KEEP` / `TRIM` / `DEMOTE` / `CUT` (+ Tier-2 ablation) | read-only (ablation restores) | on-demand context |
 | `/skill-lint` | Skill staleness across 5 dimensions | `CURRENT` / `STALE` / `BROKEN` / `DELETE` | read-only | skill logic bugs |
 | `/drift-check` | Framework / branch-behind / cron-staleness drift | `OK` per class, else `DRIFT:` aggregate | read-only (only `git fetch`) | remediation (reports, never fixes) |
-| `/eval` | The deterministic probe suite vs real state | `PASS` / `REGRESSION` / `SKIPPED` | writes `evals/RESULTS.md` only | behavioral / LLM-judge evals |
+| `/eval` | The deterministic probe suite vs real state | `PASS` / `REGRESSION` / `SKIPPED` | writes `.oh/evals/RESULTS.md` only | behavioral / LLM-judge evals |
 
 ## Dispatch Decision Table
 
